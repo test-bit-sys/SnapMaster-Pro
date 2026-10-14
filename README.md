@@ -99,7 +99,7 @@
 
 ### 1. استنساخ المشروع (Clone Repository)
 ```bash
-git clone https://github.com/zeroxx3d-wq/SnapMaster-Pro.git
+git clone https://github.com/test-bit-sys/SnapMaster-Pro.git
 cd SnapMaster-Pro
 ```
 
