@@ -327,7 +327,7 @@ class SnippingOverlay(QWidget):
                     )
 
             # Draw helpful initial guide
-            guide_text = "انقر واسحب لتحديد منطقة | اضغط Esc للإلغاء | انقر على أي نافذة لتحديدها فوراً"
+            guide_text = "Click & drag to select region | Space/F: Fullscreen | Esc: Cancel | Click window to auto-snap"
             self.draw_guide_bar(painter, guide_text)
 
         # 3. Draw live magnifier if enabled and not covered
@@ -419,12 +419,12 @@ class SnippingOverlay(QWidget):
         btn_y = by + 5
 
         buttons = [
-            ("btn_edit", "✏️", "تعديل (Enter)"),
-            ("btn_copy", "📋", "نسخ (Ctrl+C)"),
-            ("btn_ocr", "🔍", "استخراج النص (Ctrl+T)"),
-            ("btn_save", "💾", "حفظ (Ctrl+S)"),
-            ("btn_pin", "📌", "تثبيت (Ctrl+P)"),
-            ("btn_cancel", "❌", "إلغاء (Esc)")
+            ("btn_edit", "✏️", "Edit (Enter)"),
+            ("btn_copy", "📋", "Copy (Ctrl+C)"),
+            ("btn_ocr", "🔍", "Extract Text (Ctrl+T)"),
+            ("btn_save", "💾", "Save (Ctrl+S)"),
+            ("btn_pin", "📌", "Pin (Ctrl+P)"),
+            ("btn_cancel", "❌", "Cancel (Esc)")
         ]
 
         curr_x = start_x

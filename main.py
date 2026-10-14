@@ -113,12 +113,12 @@ class SnapMasterApp:
             if config.get("enable_toast", True):
                 get_toast().show_message(
                     "SnapMaster Pro",
-                    "تم التقاط لقطة الشاشة وحفظها بنجاح! 📸",
-                    action_text="فتح المحرر",
+                    "Screenshot captured and saved successfully! 📸",
+                    action_text="Open Editor",
                     action_cb=lambda: self.open_editor(pil_image)
                 )
             else:
-                self.tray.notify("SnapMaster Pro", "تم التقاط وحفظ لقطة الشاشة بنجاح!")
+                self.tray.notify("SnapMaster Pro", "Screenshot captured and saved successfully!")
 
     def on_overlay_ocr(self, pil_image):
         if not pil_image:

@@ -19,7 +19,7 @@ class SystemTrayManager(QObject):
         self.tray_icon = QSystemTrayIcon(parent)
         icon_path = str(Path(__file__).resolve().parent.parent / "assets" / "icon.png")
         self.tray_icon.setIcon(QIcon(icon_path))
-        self.tray_icon.setToolTip("SnapMaster Pro - تصوير الشاشة الاحترافي")
+        self.tray_icon.setToolTip("SnapMaster Pro - Professional Screen Capture & OCR")
 
         self.setup_menu()
         self.tray_icon.activated.connect(self.on_activated)
@@ -47,35 +47,35 @@ class SystemTrayManager(QObject):
             }
         """)
 
-        act_region = menu.addAction("✂️ تصوير منطقة مخصصة")
+        act_region = menu.addAction("✂️ Capture Region")
         act_region.triggered.connect(self.sig_capture_region.emit)
 
-        act_ocr = menu.addAction("🔍 استخراج نص فوري (OCR)")
+        act_ocr = menu.addAction("🔍 Instant OCR Snip")
         act_ocr.triggered.connect(self.sig_capture_region.emit)
 
-        act_full = menu.addAction("🖥️ تصوير كامل الشاشة")
+        act_full = menu.addAction("🖥️ Capture Fullscreen")
         act_full.triggered.connect(self.sig_capture_full.emit)
 
-        act_win = menu.addAction("🪟 تصوير النافذة النشطة")
+        act_win = menu.addAction("🪟 Capture Active Window")
         act_win.triggered.connect(self.sig_capture_window.emit)
 
         menu.addSeparator()
 
-        act_hist = menu.addAction("🖼️ سجل اللقطات...")
+        act_hist = menu.addAction("🖼️ Screenshot History...")
         act_hist.triggered.connect(self.sig_open_history.emit)
 
-        act_folder = menu.addAction("📁 فتح مجلد الحفظ")
+        act_folder = menu.addAction("📁 Open Captures Folder")
         act_folder.triggered.connect(self.sig_open_folder.emit)
 
-        act_settings = menu.addAction("⚙️ الإعدادات...")
+        act_settings = menu.addAction("⚙️ Settings...")
         act_settings.triggered.connect(self.sig_open_settings.emit)
 
         menu.addSeparator()
 
-        act_show = menu.addAction("🪟 إظهار لوحة التحكم")
+        act_show = menu.addAction("🪟 Show Dashboard")
         act_show.triggered.connect(self.sig_show_main.emit)
 
-        act_exit = menu.addAction("❌ خروج")
+        act_exit = menu.addAction("❌ Exit")
         act_exit.triggered.connect(self.sig_quit.emit)
 
         self.tray_icon.setContextMenu(menu)

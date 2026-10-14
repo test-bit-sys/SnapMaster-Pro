@@ -1,172 +1,188 @@
 <div align="center">
 
-<img src="assets/banner.png" alt="SnapMaster Pro Logo" width="420" style="border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);" />
+<img src="assets/banner.png" alt="SnapMaster Pro Banner" width="460" style="border-radius: 20px; box-shadow: 0 12px 36px rgba(0,0,0,0.6);" />
 
 # SnapMaster Pro 📸
-### استوديو تصوير الشاشة وتجهيز الشروحات واستخراج النصوص الاحترافي لنظام Windows
-**The Ultimate Screen Capture, Annotation Studio & Smart OCR for Windows PC**
+### Ultimate Screen Capture Studio, Annotation Suite & Smart OCR for Windows PC
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![GUI PyQt6](https://img.shields.io/badge/GUI-PyQt6-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://riverbankcomputing.com/software/pyqt/)
+[![PyQt6 GUI](https://img.shields.io/badge/GUI-PyQt6-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://riverbankcomputing.com/software/pyqt/)
 [![Platform Windows](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://microsoft.com/windows)
-[![OCR WinOCR](https://img.shields.io/badge/OCR-Native%20WinOCR%20%2B%20Tesseract-8B5CF6?style=for-the-badge&logo=google-cloud&logoColor=white)](https://github.com/zeroxx3d-wq/SnapMaster-Pro)
+[![OCR Dual Engine](https://img.shields.io/badge/OCR-Native%20WinOCR%20%2B%20Tesseract-8B5CF6?style=for-the-badge&logo=google-cloud&logoColor=white)](https://github.com/test-bit-sys/SnapMaster-Pro)
 [![License MIT](https://img.shields.io/badge/License-MIT-10B981?style=for-the-badge)](LICENSE)
 
 ---
 
-### 🏷️ GitHub Topics
-`screenshot` • `screen-capture` • `ocr` • `windows` • `pyqt6` • `snipaste` • `sharex` • `snagit` • `annotation-tool` • `arabic-ocr` • `winocr` • `tesseract` • `desktop-app` • `screen-recorder` • `image-editor`
+### 🏷️ Topics
+`screenshot` • `screen-capture` • `ocr` • `winocr` • `tesseract` • `pyqt6` • `snipaste` • `sharex` • `snagit` • `annotation-tool` • `windows` • `desktop-app` • `image-editor` • `productivity`
 
 </div>
 
 ---
 
-## 🌟 نبذة عن المشروع (About)
+## 🌟 Overview
 
-**SnapMaster Pro** هو تطبيق متكامل، عصري، وخفيف الوزن لنظام Windows لتصوير الشاشة وتجهيز الشروحات واستخراج النصوص (OCR). صُمم ليجمع بين أفضل مزايا كبرى البرامج العالمية مثل **Snagit** و **ShareX** و **Snipaste** في واجهة مظلمة فاخرة (Dark Mode) فائقة السرعة، دون أي استهلاك لموارد المعالج أو الذاكرة.
+**SnapMaster Pro** is a modern, high-performance, open-source screen capture and annotation studio designed specifically for Windows 10 and 11. Built from the ground up with **PyQt6**, it blends the speed and ease of lightweight snip tools with the rich annotation powers of **Snagit**, the pinning innovation of **Snipaste**, and the offline power of **Native Windows Media OCR**.
 
----
-
-## 🚀 المميزات الرئيسية (Key Features)
-
-### 1. أوضاع تصوير متعددة وفائقة الدقة (Capture Modes)
-- **✂️ تصوير منطقة مخصصة (Region Snip):** تحديد حر وسلس لأي جزء من الشاشة مع إمكانية تعديل الأبعاد والموقع بدقة بكسل-بكسل.
-- **🖥️ كامل الشاشة (Fullscreen):** التقاط فوري لجميع الشاشات المتصلة (دعم الشاشات المتعددة Multi-Monitor).
-- **🪟 النافذة النشطة (Active Window):** التقاط نظيف لنافذة التطبيق المحدد دون حواف ظل غير مرغوبة عبر Windows DWM API.
-- **⏱️ تصوير بمؤقت زمني (Delay Timer):** عد تنازلي (3، 5، 10 ثوانٍ) لالتقاط القوائم المنسدلة والحالات التفاعلية.
-
-### 2. مكبرة حية ملونة (Live Pixel Magnifier & Color Picker)
-- تكبير فوري حتى 5x-8x لمحيط المؤشر أثناء التحديد.
-- شبكة بكسل واضحة مع إشارة للهدف بدقة بكسل واحد.
-- قراءة فورية للألوان بصيغتي **RGB** و **HEX Code** (مثالي للمصممين والمبرمجين).
-- عرض دقيق لإحداثيات المؤشر (X, Y) وأبعاد التحديد (W × H).
-
-### 3. محرك OCR ذكي مزدوج (Smart Dual OCR Engine)
-- **⚡ Windows Media OCR (Native):** محرك مدمج بنظام Windows 10 و 11 يعمل بدون الحاجة لأي تثبيت خارجي، فائق السرعة، ويدعم اللغتين العربية والإنجليزية بدقة مذهلة.
-- **🔍 Tesseract OCR:** دعم تلقائي لمحرك Tesseract مع اكتشاف المسارات تلقائياً.
-- **⚡ استخراج نص فوري من شريط التحديد:** زر OCR مباشر من شريط التحديد السريع دون الحاجة لفتح المحرر الكامل.
-- **🌐 تكامل ذكي:** إمكانية نسخ النص، تنظيف المسافات، حفظه كملف `.txt`، أو البحث المباشر عنه في Google بنقرة زر واحدة.
-
-### 4. محرر شروحات وتعديل متكامل (Annotation Studio)
-- **↘️ سهم توجيهي (Arrow):** أسهم احترافية بحواف مثلثة حادة.
-- **🔲 مستطيل ودائرة (Shapes):** خط خارجي أو ملء ممتلئ بلون مميز.
-- **✏️ قلم حر (Pen):** رسم سلس مع تنعيم تلقائي.
-- **🖍️ قلم تمييز (Highlighter):** تظليل نصف شفاف ومشرق لتحديد النصوص والبيانات.
-- **💧 تمويه وحجب (Blur / Pixelate Mosaic):** أداة تشويش فورية لحجب كلمات المرور، أرقام الهواتف، والبيانات الحساسة.
-- **🔤 نصوص توضيحية (Text):** نصوص واضحة مع خلفية داكنة لضمان القراءة على أي خلفية.
-- **🔢 ترقيم تسلسلي للخطوات (Step Counter Badges):** دوائر مرقمة تلقائياً (1، 2، 3...) لكتابة الشروحات وتقارير الأخطاء بسهولة.
-- **⭐ طوابع سريعة (Stamps):** علامات صح (✓)، خطأ (✗)، نجمة، وغيرها.
-- **✂️ قص داخلي (Crop):** إعادة قص وتعديل حدود لقطة الشاشة داخل المحرر.
-- **📄 تصدير متعدد الصيغ:** حفظ كـ PNG أو JPEG أو WebP أو مستند PDF جاهز للمشاركة!
-- **↩️ تراجع وإعادة غير محدود (Undo / Redo):** تحكم كامل في جميع التعديلات.
-
-### 5. تثبيت على الشاشة (Pin to Screen)
-- ميزة مستوحاة من Snipaste لتثبيت لقطة الشاشة كنافذة عائمة فوق كل البرامج.
-- تحريك بالسحب في أي مكان على الشاشة.
-- تغيير الشفافية (Opacity) عبر عجلة الفأرة (Mouse Wheel) لمقارنة التصاميم أو قراءة التعليمات أثناء البرمجة!
-- تكبير وتصغير بالحجم عبر `Ctrl + Wheel`.
-- استخراج النصوص عبر OCR مباشرة من القائمة السياقية للنافذة المثبتة.
-
-### 6. إشعارات منبثقة تفاعلية (Toast HUD)
-- إشعار عائم أنيق وسريع يظهر في الزاوية السفلية عند الالتقاط أو النسخ، مع زر للانتقال الفوري إلى المحرر أو فتح المجلد.
-
-### 7. معرض وسجل اللقطات مع البحث الفوري (History Gallery & Search)
-- استعراض جميع اللقطات السابقة مع الصور المصغرة والأبعاد والحجم وتاريخ الالتقاط.
-- شريط بحث ذكي لتصفية اللقطات بالاسم أو التاريخ في الوقت الفعلي.
-- إجراء OCR فوري على أي لقطة قديمة بنقرة واحدة!
+Whether you are creating documentation, reporting bugs, capturing meeting slides, or extracting text from uncopyable screen areas, SnapMaster Pro delivers a seamless, pixel-perfect experience with zero resource bloat.
 
 ---
 
-## ⌨️ جدول الاختصارات الافتراضية (Default Hotkeys)
+## 🚀 Key Features
 
-| الاختصار | الوظيفة |
+### 1. 🎯 Precision Capture Modes
+- **✂️ Region Snip:** Smooth, pixel-accurate selection with resize handles, keyboard nudging, and live coordinate feedback.
+- **🖥️ Fullscreen Capture:** Instant single-click capture across all connected monitors (Multi-Monitor Virtual Desktop support).
+- **🪟 Active Window Capture:** Clean window snapping using the Windows Desktop Window Manager (DWM) API without drop-shadow clipping artifacts.
+- **⏱️ Timed Delay Capture:** 3s, 5s, or 10s countdown timers to capture dropdown menus, tooltips, and interactive UI states.
+
+### 2. 🔍 Live Pixel Magnifier & Color Picker
+- Instant **5x–8x zoom loupe** around your mouse cursor during capture.
+- Pixel grid with a single-pixel targeting crosshair.
+- Real-time **RGB** and **HEX Color** inspection (perfect for UI/UX designers and front-end developers).
+- Live cursor coordinates `(X, Y)` and selection dimensions `(W × H)`.
+
+### 3. ⚡ Smart Dual-Engine OCR (Optical Character Recognition)
+- **⚡ Native Windows Media OCR:** Uses the built-in Windows 10/11 OCR runtime via `winocr`. **Zero external installation required**, lightning-fast, and works completely offline.
+- **🔍 Tesseract OCR Support:** Automatic path discovery for standalone Tesseract installations as a secondary engine.
+- **⚡ One-Click OCR from Snipping Toolbar:** Extract text directly from the snip overlay without even opening the full editor (`Ctrl + T`).
+- **📋 Smart OCR Inspector:**
+  - One-click **Copy to Clipboard**.
+  - **Clean Formatting** to remove unwanted line breaks and redundant spaces.
+  - **Direct Google Search** with one click.
+  - **Save as TXT File**.
+  - Real-time word and character counters.
+
+### 4. 🎨 Annotation Studio
+- **↘️ Directional Arrows:** Sharp triangular-headed callout arrows.
+- **🔲 Geometric Shapes:** Crisp rectangles, rounded rectangles, and ellipses with outline or solid fill modes.
+- **✏️ Freehand Pen:** Smooth drawing with antialiased curves.
+- **🖍️ Highlighter:** Semi-transparent fluorescent highlighter to emphasize code and text.
+- **💧 Mosaic & Blur:** High-density pixelation filter to redact passwords, phone numbers, and sensitive information.
+- **🔤 Badged Text:** High-contrast text overlays with rounded dark backdrops for readability on any background.
+- **🔢 Step Counter Badges:** Automatic incrementing circular numbers `(1, 2, 3...)` for tutorials and bug reproduction guides.
+- **⭐ Quick Stamps:** Quick feedback markers (`✓`, `✗`, `⭐`, `❓`, `⚠️`, `❤️`, `➜`).
+- **✂️ In-Canvas Crop:** Re-crop and trim images directly inside the editor.
+- **📄 Multi-Format Export:** Save as **PNG**, **JPEG**, **WebP**, or export directly into a **PDF Document**!
+- **↩️ Unlimited Undo / Redo:** Full history stack for safe and reversible modifications.
+
+### 5. 📌 Pin to Screen (Always on Top)
+- Inspired by Snipaste: float your captured screenshots anywhere on your desktop above all running applications.
+- Drag and move effortlessly.
+- **Opacity Control:** Scroll your mouse wheel over the pinned window to adjust transparency (100% down to 20%)—ideal for referencing blueprints, code, or design comps.
+- **Scale Control:** `Ctrl + Mouse Wheel` to dynamically scale up or down.
+- **Direct OCR:** Right-click any pinned screenshot and extract text instantly.
+
+### 6. 🔔 Modern Toast Notifications (HUD)
+- Non-intrusive floating glassmorphic toast notification at the bottom-right corner of your screen.
+- Instant actions: click to open the screenshot folder or jump directly into the editor.
+
+### 7. 🖼️ Screenshot History Gallery & Live Search
+- Visual thumbnail gallery of all past screenshots with file size, dimensions, and timestamps.
+- **Instant Search Bar:** Filter captures by date or name in real-time.
+- **Direct Actions:** Open in Editor, Copy, Show in File Explorer, Delete, or run OCR on past captures.
+
+---
+
+## ⌨️ Default Keyboard Shortcuts
+
+| Shortcut | Description |
 | :--- | :--- |
-| `Ctrl + Shift + S` | تصوير منطقة محددة (Region Capture) |
-| `Ctrl + Shift + F` | تصوير كامل الشاشة (Fullscreen) |
-| `Ctrl + Shift + W` | تصوير النافذة النشطة (Active Window) |
-| `Space` / `F` | تحديد كامل الشاشة فور فتح أداة التحديد |
-| `Ctrl + T` | استخراج النصوص عبر OCR فوراً |
-| `Enter` / نقر مزدوج | تأكيد التحديد وفتح المحرر |
-| `Ctrl + C` | نسخ الصورة إلى الحافظة |
-| `Ctrl + S` | حفظ الصورة كملف |
-| `Ctrl + P` | تثبيت لقطة الشاشة كإطار عائم فوق النوافذ |
-| `Ctrl + Z` / `Ctrl + Y` | التراجع / الإعادة |
-| `Esc` | إلغاء الالتقاط أو إغلاق النوافذ العائمة |
+| `Ctrl + Shift + S` | Capture Region (Global Hotkey) |
+| `Ctrl + Shift + F` | Capture Fullscreen (Global Hotkey) |
+| `Ctrl + Shift + W` | Capture Active Window (Global Hotkey) |
+| `Space` / `F` | Select Entire Screen inside Snipping Overlay |
+| `Ctrl + T` | Extract Text via OCR immediately |
+| `Enter` / Double Click | Confirm selection & open in Annotation Studio |
+| `Ctrl + C` | Copy screenshot directly to Clipboard |
+| `Ctrl + S` | Save screenshot to file |
+| `Ctrl + P` | Pin screenshot as floating desktop widget |
+| `Ctrl + Z` | Undo last annotation |
+| `Ctrl + Y` | Redo annotation |
+| `Arrow Keys` | Nudge selection rectangle (Hold `Shift` for 10px steps) |
+| `Esc` | Cancel capture or close floating widget |
 
 ---
 
-## 🛠️ متطلبات التشغيل والتثبيت (Installation)
+## 🛠️ Installation & Getting Started
 
-### 1. استنساخ المشروع (Clone Repository)
+### 1. Prerequisites
+- **Operating System:** Windows 10 (Build 1809+) or Windows 11 (64-bit recommended).
+- **Python:** Python 3.10 or higher.
+
+### 2. Clone the Repository
 ```bash
 git clone https://github.com/test-bit-sys/SnapMaster-Pro.git
 cd SnapMaster-Pro
 ```
 
-### 2. تثبيت الحزم المطلوبة (Dependencies)
+### 3. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. تشغيل البرنامج (Run)
+### 4. Run the Application
 ```bash
 python main.py
 ```
 
 ---
 
-## 📦 بناء ملف تنفيذي مستقل (.exe)
-يمكنك تحويل المشروع إلى تطبيق Windows تنفيذي مستقل يعمل دون الحاجة لتثبيت بايثون:
+## 📦 Building Standalone Executable (.exe)
+
+You can package SnapMaster Pro into a standalone Windows executable that runs without requiring Python to be installed:
 
 ```bash
 python build_exe.py
 ```
-الملف الناتج سيكون متاحاً داخل المجلد:
+
+The compiled binary will be located at:
 `dist/SnapMasterPro/SnapMasterPro.exe`
 
 ---
 
-## 📂 هيكلية المشروع (Project Architecture)
+## 📂 Project Architecture
 
 ```
 SnapMaster-Pro/
-├── main.py                     # نقطة الانطلاق وإدارة دورة حياة التطبيق
+├── main.py                     # Application entry point & service coordinator
 ├── core/
-│   ├── capture.py              # محرك التقاط الشاشة والنوافذ والشاشات المتعددة
-│   ├── config.py               # إدارة إعدادات وتفضيلات المستخدم
-│   ├── hotkeys.py              # إدارة الاختصارات العامة في الخلفية
-│   ├── history.py              # مدير السجل والتخزين التلقائي للقطات
-│   ├── ocr_engine.py           # محرك التعرف الضوئي المزدوج (WinOCR + Tesseract)
-│   └── sound.py                # المؤثرات الصوتية (صوت غالق الكاميرا)
+│   ├── capture.py              # DWM window bounds, multi-monitor virtual screen capture
+│   ├── config.py               # User preferences & persistent JSON configuration
+│   ├── hotkeys.py              # Global background keyboard shortcut listener
+│   ├── history.py              # Screenshot logging, metadata & auto-save manager
+│   ├── ocr_engine.py           # Smart Dual OCR engine (Native WinOCR + Tesseract)
+│   └── sound.py                # Asynchronous camera shutter audio feedback
 ├── ui/
-│   ├── styles.py               # نظام التصميم العصري الداكن (Dark Design System)
-│   ├── main_window.py          # لوحة التحكم الرئيسية وشاشة البداية
-│   ├── overlay.py              # طبقة التحديد الشفافة والمكبرة اللحظية وشريط الأدوات
-│   ├── editor_window.py        # استوديو التعديل والشروحات الكامل مع تصدير PDF
-│   ├── pin_window.py           # أداة التثبيت العائمة على الشاشة مع دعم OCR
-│   ├── toast.py                # إشعارات تفاعلية منبثقة عصرية (Toast HUD)
-│   ├── history_dialog.py       # نافذة استعراض ومعاينة سجل اللقطات مع البحث الفوري
-│   ├── settings_dialog.py      # نافذة الإعدادات والتفضيلات الشاملة
-│   └── tray.py                 # أيقونة وقائمة صينية النظام السريعة
+│   ├── styles.py               # Modern dark theme design system
+│   ├── main_window.py          # Dashboard window & primary action cards
+│   ├── overlay.py              # Snipping canvas, live magnifier & quick action toolbar
+│   ├── editor_window.py        # Complete annotation studio & multi-format exporter
+│   ├── pin_window.py           # Frameless floating pin widget with opacity controls
+│   ├── toast.py                # Floating interactive Toast HUD notification
+│   ├── history_dialog.py       # Visual history browser with real-time search
+│   ├── settings_dialog.py      # Comprehensive settings and preferences dialog
+│   └── tray.py                 # System tray icon, notifications & background menu
 ├── assets/
-│   ├── banner.png              # شعار وبنر المشروع بدقة 4K
-│   ├── icon.ico                # أيقونة التطبيق متعددة الأحجام لنظام ويندوز
-│   ├── icon.png                # الشعار بدقة عالية
-│   └── shutter.wav             # ملف صوت التقاط الكاميرا
-├── build_exe.py                # سكربت التجميع إلى .exe
-├── requirements.txt            # قائمة الاعتماديات والمكتبات
-├── .gitignore                  # استثناء الملفات المؤقتة
-├── LICENSE                     # ترخيص MIT المفتوح
-└── README.md                   # التوثيق الكامل
+│   ├── banner.png              # 4K branding banner
+│   ├── icon.ico                # Multi-resolution Windows application icon
+│   ├── icon.png                # High-resolution PNG logo
+│   └── shutter.wav             # Mechanical camera shutter sound effect
+├── build_exe.py                # PyInstaller compilation script
+├── requirements.txt            # Dependency specification
+├── .gitignore                  # Git ignore rules
+├── LICENSE                     # MIT License
+└── README.md                   # Complete English documentation
 ```
 
 ---
 
-## 📄 الترخيص (License)
-هذا المشروع مرخص تحت رخصة **MIT License** - طالع ملف [LICENSE](LICENSE) لمزيد من التفاصيل.
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <div align="center">
-Made with ❤️ by <a href="https://github.com/zeroxx3d-wq">zeroxx3d-wq</a>
+Developed with ❤️ by <a href="https://github.com/test-bit-sys">test-bit-sys</a>
 </div>

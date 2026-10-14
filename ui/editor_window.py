@@ -97,7 +97,7 @@ class CanvasWidget(QWidget):
                 self.next_step_num -= 1
             self.redo_stack.append(popped)
             self.update()
-            self.status_updated.emit("تم التراجع (Undo)")
+            self.status_updated.emit("Undo")
 
     def redo(self):
         if self.redo_stack:
@@ -106,7 +106,7 @@ class CanvasWidget(QWidget):
                 self.next_step_num += 1
             self.items.append(item)
             self.update()
-            self.status_updated.emit("تمت الإعادة (Redo)")
+            self.status_updated.emit("Redo")
 
     def canvas_pos(self, widget_pos):
         """Converts widget position considering zoom level."""
@@ -140,7 +140,7 @@ class CanvasWidget(QWidget):
                 return
 
             if self.current_tool == TOOL_TEXT:
-                text, ok = QInputDialog.getText(self, "إضافة نص", "اكتب النص التوضيحي:")
+                text, ok = QInputDialog.getText(self, "Add Text", "Enter callout text:")
                 if ok and text.strip():
                     item = AnnotationItem(TOOL_TEXT, self.current_color, self.stroke_width)
                     item.points = [pos]
@@ -163,7 +163,7 @@ class CanvasWidget(QWidget):
 
     def mouseMoveEvent(self, event):
         pos = self.canvas_pos(event.pos())
-        self.status_updated.emit(f"الموقع: X={pos.x()}, Y={pos.y()} | الأبعاد: {self.base_pixmap.width()}×{self.base_pixmap.height()}")
+        self.status_updated.emit(f"Pos: X={pos.x()}, Y={pos.y()} | Size: {self.base_pixmap.width()}×{self.base_pixmap.height()}")
 
         if self.current_item and self.start_pos:
             if self.current_tool in (TOOL_PEN, TOOL_HIGHLIGHT):
@@ -217,7 +217,7 @@ class CanvasWidget(QWidget):
             rendered = self.render_final_image()
             cropped_pil = rendered.crop((r.left(), r.top(), r.right(), r.bottom()))
             self.set_base_image(cropped_pil)
-            self.status_updated.emit("تم قص الصورة بنجاح")
+            self.status_updated.emit("Image cropped successfully")
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -373,7 +373,7 @@ class EditorWindow(QMainWindow):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("SnapMaster Pro - محرر الصور والشروحات")
+        self.setWindowTitle("SnapMaster Pro - Annotation Studio")
         self.setMinimumSize(950, 680)
 
         icon_path = str(Path(__file__).resolve().parent.parent / "assets" / "icon.png")
@@ -400,7 +400,7 @@ class EditorWindow(QMainWindow):
         main_layout.addWidget(self.scroll_area)
 
         # 3. Status Bar
-        self.status_bar = QLabel("جاهز للتحرير والتعليق | اختر أداة للبدء")
+        self.status_bar = QLabel("Ready for annotations | Select a tool to begin")
         self.status_bar.setStyleSheet(
             "background-color: #1e293b; color: #94a3b8; padding: 6px 14px; font-size: 12px; border-top: 1px solid #334155;"
         )
@@ -420,16 +420,16 @@ class EditorWindow(QMainWindow):
         self.tool_group.setExclusive(True)
 
         tools = [
-            (TOOL_ARROW, "↘️ سهم", "رسم سهم توجيهي (A)"),
-            (TOOL_RECT, "🔲 مستطيل", "رسم مستطيل (R)"),
-            (TOOL_CIRCLE, "⭕ دائرة", "رسم دائرة أو شكل بيضاوي (C)"),
-            (TOOL_PEN, "✏️ قلم", "رسم يدوي حر (P)"),
-            (TOOL_HIGHLIGHT, "🖍️ تمييز", "قلم تمييز شفاف (H)"),
-            (TOOL_BLUR, "💧 تمويه", "تمويه / تشويش لحجب البيانات الحساسة (B)"),
-            (TOOL_TEXT, "🔤 نص", "إضافة نص توضيحي (T)"),
-            (TOOL_STEP, "🔢 خطوات", "ترقيم خطوات تسلسلي 1، 2، 3 (N)"),
-            (TOOL_STAMP, "✓ طابع", "طوابع وتأشير سريع"),
-            (TOOL_CROP, "✂️ قص", "قص وتحديد الصورة (X)"),
+            (TOOL_ARROW, "↘️ Arrow", "Draw directional arrow (A)"),
+            (TOOL_RECT, "🔲 Rect", "Draw rectangle (R)"),
+            (TOOL_CIRCLE, "⭕ Circle", "Draw ellipse / circle (C)"),
+            (TOOL_PEN, "✏️ Pen", "Freehand drawing pen (P)"),
+            (TOOL_HIGHLIGHT, "🖍️ Highlight", "Translucent highlighter (H)"),
+            (TOOL_BLUR, "💧 Blur", "Mosaic blur to redact sensitive data (B)"),
+            (TOOL_TEXT, "🔤 Text", "Add callout text (T)"),
+            (TOOL_STEP, "🔢 Steps", "Step counter badge 1, 2, 3 (N)"),
+            (TOOL_STAMP, "✓ Stamp", "Quick stamps and markers"),
+            (TOOL_CROP, "✂️ Crop", "Crop & trim image canvas (X)"),
         ]
 
         for tool_id, title, tooltip in tools:
@@ -467,18 +467,18 @@ class EditorWindow(QMainWindow):
         bar_layout.addWidget(self.create_separator())
 
         # Colors Palette
-        color_label = QLabel("اللون:")
+        color_label = QLabel("Color:")
         color_label.setStyleSheet("color: #94a3b8; font-size: 11px;")
         bar_layout.addWidget(color_label)
 
         palette = [
-            ("#f43f5e", "أحمر مرجاني"),
-            ("#38bdf8", "أزرق سماوي"),
-            ("#10b981", "أخضر زمردي"),
-            ("#f59e0b", "ذهبي"),
-            ("#a855f7", "بنفسجي"),
-            ("#ffffff", "أبيض"),
-            ("#0f172a", "أسود")
+            ("#f43f5e", "Coral Red"),
+            ("#38bdf8", "Sky Blue"),
+            ("#10b981", "Emerald Green"),
+            ("#f59e0b", "Amber Gold"),
+            ("#a855f7", "Purple"),
+            ("#ffffff", "White"),
+            ("#0f172a", "Black")
         ]
 
         for c_hex, c_name in palette:
@@ -501,7 +501,7 @@ class EditorWindow(QMainWindow):
         # Custom Color Picker Button
         pick_btn = QPushButton("🎨")
         pick_btn.setFixedSize(24, 24)
-        pick_btn.setToolTip("اختيار لون مخصص...")
+        pick_btn.setToolTip("Choose custom color...")
         pick_btn.setStyleSheet("background: #0f172a; border: 1px solid #475569; border-radius: 6px;")
         pick_btn.clicked.connect(self.choose_custom_color)
         bar_layout.addWidget(pick_btn)
@@ -510,7 +510,7 @@ class EditorWindow(QMainWindow):
         bar_layout.addWidget(self.create_separator())
 
         # Stroke Width Slider
-        size_label = QLabel("الحجم:")
+        size_label = QLabel("Size:")
         size_label.setStyleSheet("color: #94a3b8; font-size: 11px;")
         bar_layout.addWidget(size_label)
 
@@ -525,43 +525,43 @@ class EditorWindow(QMainWindow):
         bar_layout.addWidget(self.create_separator())
 
         # Action Buttons (Undo, Redo, OCR, Pin, Save, Copy)
-        btn_undo = QPushButton("↩️ تراجع")
+        btn_undo = QPushButton("↩️ Undo")
         btn_undo.setStyleSheet(self.secondary_btn_style())
-        btn_undo.setToolTip("تراجع (Ctrl+Z)")
+        btn_undo.setToolTip("Undo (Ctrl+Z)")
         btn_undo.clicked.connect(self.canvas.undo)
         bar_layout.addWidget(btn_undo)
 
-        btn_redo = QPushButton("↪️ إعادة")
+        btn_redo = QPushButton("↪️ Redo")
         btn_redo.setStyleSheet(self.secondary_btn_style())
-        btn_redo.setToolTip("إعادة (Ctrl+Y)")
+        btn_redo.setToolTip("Redo (Ctrl+Y)")
         btn_redo.clicked.connect(self.canvas.redo)
         bar_layout.addWidget(btn_redo)
 
         bar_layout.addStretch()
 
         # OCR Button
-        btn_ocr = QPushButton("🔍 استخراج النص")
+        btn_ocr = QPushButton("🔍 Extract Text")
         btn_ocr.setStyleSheet(self.accent_btn_style("#6366f1"))
-        btn_ocr.setToolTip("استخراج النص من الصورة (OCR) (Ctrl+T)")
+        btn_ocr.setToolTip("Extract text from image (OCR) (Ctrl+T)")
         btn_ocr.clicked.connect(self.action_ocr)
         bar_layout.addWidget(btn_ocr)
 
         # Pin Button
-        btn_pin = QPushButton("📌 تثبيت")
+        btn_pin = QPushButton("📌 Pin")
         btn_pin.setStyleSheet(self.secondary_btn_style())
-        btn_pin.setToolTip("تثبيت الصورة كإطار عائم على الشاشة (Ctrl+P)")
+        btn_pin.setToolTip("Pin image as floating desktop widget (Ctrl+P)")
         btn_pin.clicked.connect(self.action_pin)
         bar_layout.addWidget(btn_pin)
 
         # Save As Button
-        btn_save = QPushButton("💾 حفظ باسم")
+        btn_save = QPushButton("💾 Save As")
         btn_save.setStyleSheet(self.secondary_btn_style())
-        btn_save.setToolTip("حفظ الصورة كملف (Ctrl+S)")
+        btn_save.setToolTip("Save image to file (Ctrl+S)")
         btn_save.clicked.connect(self.action_save_as)
         bar_layout.addWidget(btn_save)
 
         # Quick Copy Button (Glowing Primary)
-        btn_copy = QPushButton("📋 نسخ وإغلاق")
+        btn_copy = QPushButton("📋 Copy & Close")
         btn_copy.setStyleSheet("""
             QPushButton {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #10b981, stop:1 #059669);
@@ -576,7 +576,7 @@ class EditorWindow(QMainWindow):
                 background: #059669;
             }
         """)
-        btn_copy.setToolTip("نسخ إلى الحافظة تلقائياً وإغلاق (Ctrl+C)")
+        btn_copy.setToolTip("Copy to clipboard & close (Ctrl+C)")
         btn_copy.clicked.connect(self.action_copy_and_close)
         bar_layout.addWidget(btn_copy)
 
@@ -653,13 +653,13 @@ class EditorWindow(QMainWindow):
         for btn in self.tool_group.buttons():
             if tool_id in btn.toolTip():
                 btn.setChecked(True)
-        self.status_bar.setText(f"الأداة النشطة: {tool_id.upper()}")
+        self.status_bar.setText(f"Active Tool: {tool_id.upper()}")
 
     def set_canvas_color(self, hex_color):
         self.canvas.current_color = QColor(hex_color)
 
     def choose_custom_color(self):
-        col = QColorDialog.getColor(self.canvas.current_color, self, "اختر لوناً")
+        col = QColorDialog.getColor(self.canvas.current_color, self, "Select Color")
         if col.isValid():
             self.canvas.current_color = col
 
@@ -678,8 +678,8 @@ class EditorWindow(QMainWindow):
             if config.get("enable_toast", True):
                 get_toast().show_message(
                     "SnapMaster Pro",
-                    "تم نسخ لقطة الشاشة إلى الحافظة بنجاح 📋",
-                    action_text="فتح المجلد",
+                    "Screenshot copied to clipboard! 📋",
+                    action_text="Open Folder",
                     action_cb=lambda: os.startfile(config.get("save_dir", ""))
                 )
             self.close()
@@ -694,7 +694,7 @@ class EditorWindow(QMainWindow):
 
         path, _ = QFileDialog.getSaveFileName(
             self,
-            "حفظ لقطة الشاشة",
+            "Save Screenshot",
             suggested,
             "PNG Image (*.png);;JPEG Image (*.jpg);;WebP Image (*.webp);;PDF Document (*.pdf);;All Files (*.*)"
         )
@@ -707,9 +707,9 @@ class EditorWindow(QMainWindow):
                 rendered.save(path, fmt)
             history.add_entry(path, rendered.width, rendered.height)
             if config.get("enable_toast", True):
-                get_toast().show_message("تم الحفظ", f"تم حفظ لقطة الشاشة بنجاح:\n{os.path.basename(path)}")
+                get_toast().show_message("Saved Successfully", f"Saved to {os.path.basename(path)}")
             else:
-                QMessageBox.information(self, "تم الحفظ", f"تم حفظ لقطة الشاشة بنجاح في:\n{path}")
+                QMessageBox.information(self, "Saved", f"Screenshot saved successfully at:\n{path}")
 
     def action_pin(self):
         rendered = self.canvas.render_final_image()
@@ -721,7 +721,7 @@ class EditorWindow(QMainWindow):
         rendered = self.canvas.render_final_image()
         if not rendered:
             return
-        self.status_bar.setText("جاري معالجة النص عبر تقنية OCR...")
+        self.status_bar.setText("Processing OCR text extraction...")
         res = extract_text_from_image(rendered)
         if len(res) == 3:
             success, text, engine_name = res
@@ -730,7 +730,7 @@ class EditorWindow(QMainWindow):
             engine_name = "Auto"
 
         dlg = QDialog(self)
-        dlg.setWindowTitle("استخراج النص الذكي (OCR) - SnapMaster Pro")
+        dlg.setWindowTitle("Smart Text Extraction (OCR) - SnapMaster Pro")
         dlg.resize(580, 440)
         dlg.setStyleSheet("background-color: #0f172a; color: #ffffff;")
         dlg_layout = QVBoxLayout(dlg)
@@ -738,13 +738,13 @@ class EditorWindow(QMainWindow):
         dlg_layout.setSpacing(12)
 
         header_row = QHBoxLayout()
-        title_lbl = QLabel("النصوص المستخرجة من لقطة الشاشة:" if success else "تنبيه OCR:")
+        title_lbl = QLabel("Extracted Text from Screenshot:" if success else "OCR Notice:")
         title_lbl.setStyleSheet("font-size: 15px; font-weight: bold; color: #38bdf8;")
         header_row.addWidget(title_lbl)
 
         header_row.addStretch()
 
-        engine_badge = QLabel(f"⚡ المحرك: {engine_name}")
+        engine_badge = QLabel(f"⚡ Engine: {engine_name}")
         engine_badge.setStyleSheet("background: #1e293b; color: #10b981; font-weight: bold; border-radius: 6px; padding: 3px 8px; font-size: 11px; border: 1px solid #334155;")
         header_row.addWidget(engine_badge)
         dlg_layout.addLayout(header_row)
@@ -757,12 +757,12 @@ class EditorWindow(QMainWindow):
         # Counter info
         char_count = len(text)
         word_count = len(text.split())
-        info_lbl = QLabel(f"عدد الكلمات: {word_count} | عدد الأحرف: {char_count}")
+        info_lbl = QLabel(f"Words: {word_count} | Characters: {char_count}")
         info_lbl.setStyleSheet("color: #94a3b8; font-size: 11px;")
         dlg_layout.addWidget(info_lbl)
 
         btn_row = QHBoxLayout()
-        btn_copy_text = QPushButton("📋 نسخ النص")
+        btn_copy_text = QPushButton("📋 Copy Text")
         btn_copy_text.setStyleSheet("""
             QPushButton {
                 background: #38bdf8; color: #0f172a; font-weight: bold; border-radius: 6px; padding: 8px 16px;
@@ -771,12 +771,12 @@ class EditorWindow(QMainWindow):
         """)
         def do_copy():
             QApplication.clipboard().setText(txt_edit.toPlainText())
-            get_toast().show_message("SnapMaster Pro", "تم نسخ النص المستخرج إلى الحافظة! 📋")
-            btn_copy_text.setText("✅ تم النسخ!")
+            get_toast().show_message("SnapMaster Pro", "Extracted text copied to clipboard! 📋")
+            btn_copy_text.setText("✅ Copied!")
         btn_copy_text.clicked.connect(do_copy)
         btn_row.addWidget(btn_copy_text)
 
-        btn_search = QPushButton("🌐 بحث في Google")
+        btn_search = QPushButton("🌐 Google Search")
         btn_search.setStyleSheet("background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-radius: 6px; padding: 8px 14px; font-weight: bold;")
         def do_search():
             q = txt_edit.toPlainText().strip()
@@ -786,20 +786,20 @@ class EditorWindow(QMainWindow):
         btn_search.clicked.connect(do_search)
         btn_row.addWidget(btn_search)
 
-        btn_save_txt = QPushButton("💾 حفظ كملف TXT")
+        btn_save_txt = QPushButton("💾 Save TXT")
         btn_save_txt.setStyleSheet("background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-radius: 6px; padding: 8px 14px; font-weight: bold;")
         def do_save_txt():
-            path, _ = QFileDialog.getSaveFileName(dlg, "حفظ النص المستخرج", "Extracted_Text.txt", "Text Files (*.txt)")
+            path, _ = QFileDialog.getSaveFileName(dlg, "Save Extracted Text", "Extracted_Text.txt", "Text Files (*.txt)")
             if path:
                 with open(path, "w", encoding="utf-8") as f:
                     f.write(txt_edit.toPlainText())
-                get_toast().show_message("تم الحفظ", f"تم حفظ النص في {os.path.basename(path)}")
+                get_toast().show_message("Saved", f"Text saved to {os.path.basename(path)}")
         btn_save_txt.clicked.connect(do_save_txt)
         btn_row.addWidget(btn_save_txt)
 
         btn_row.addStretch()
 
-        btn_close = QPushButton("إغلاق")
+        btn_close = QPushButton("Close")
         btn_close.setStyleSheet("background: #334155; color: #ffffff; border-radius: 6px; padding: 8px 16px;")
         btn_close.clicked.connect(dlg.accept)
         btn_row.addWidget(btn_close)

@@ -96,7 +96,7 @@ class PinWindow(QWidget):
             self.close()
         elif event.modifiers() & Qt.KeyboardModifier.ControlModifier and event.key() == Qt.Key.Key_C:
             copy_to_clipboard(self.original_pixmap)
-            get_toast().show_message("SnapMaster Pro", "تم نسخ الصورة إلى الحافظة! 📋")
+            get_toast().show_message("SnapMaster Pro", "Image copied to clipboard! 📋")
         else:
             super().keyPressEvent(event)
 
@@ -121,23 +121,23 @@ class PinWindow(QWidget):
             }
         """)
 
-        act_copy = menu.addAction("📋 نسخ إلى الحافظة")
-        act_ocr = menu.addAction("🔍 استخراج النص (OCR)")
-        act_save = menu.addAction("💾 حفظ باسم...")
+        act_copy = menu.addAction("📋 Copy to Clipboard")
+        act_ocr = menu.addAction("🔍 Extract Text (OCR)")
+        act_save = menu.addAction("💾 Save As...")
         menu.addSeparator()
 
-        opacity_menu = menu.addMenu("👁️ الشفافية")
+        opacity_menu = menu.addMenu("👁️ Opacity")
         for val, label in [(1.0, "100%"), (0.75, "75%"), (0.50, "50%"), (0.30, "30%")]:
             act = opacity_menu.addAction(label)
             act.triggered.connect(lambda ch, v=val: self.set_custom_opacity(v))
 
         menu.addSeparator()
-        act_close = menu.addAction("❌ إغلاق (Esc)")
+        act_close = menu.addAction("❌ Close (Esc)")
 
         chosen = menu.exec(global_pos)
         if chosen == act_copy:
             copy_to_clipboard(self.original_pixmap)
-            get_toast().show_message("SnapMaster Pro", "تم نسخ الصورة إلى الحافظة! 📋")
+            get_toast().show_message("SnapMaster Pro", "Image copied to clipboard! 📋")
         elif chosen == act_ocr:
             self.do_ocr()
         elif chosen == act_save:
@@ -155,12 +155,12 @@ class PinWindow(QWidget):
             eng = "Auto"
 
         dlg = QDialog(self)
-        dlg.setWindowTitle("استخراج النص (OCR)")
+        dlg.setWindowTitle("Extract Text (OCR)")
         dlg.resize(500, 360)
         dlg.setStyleSheet("background-color: #0f172a; color: #ffffff;")
         dlg_lay = QVBoxLayout(dlg)
 
-        title_lbl = QLabel(f"النصوص المستخرجة عبر {eng}:" if success else "معلومات OCR:")
+        title_lbl = QLabel(f"Extracted Text via {eng}:" if success else "OCR Information:")
         title_lbl.setStyleSheet("font-size: 14px; font-weight: bold; color: #38bdf8;")
         dlg_lay.addWidget(title_lbl)
 
@@ -170,12 +170,12 @@ class PinWindow(QWidget):
         dlg_lay.addWidget(txt_edit)
 
         btn_box = QHBoxLayout()
-        btn_copy = QPushButton("📋 نسخ النص")
+        btn_copy = QPushButton("📋 Copy Text")
         btn_copy.setStyleSheet("background: #38bdf8; color: #0f172a; font-weight: bold; border-radius: 6px; padding: 8px 16px;")
-        btn_copy.clicked.connect(lambda: (QApplication.clipboard().setText(txt_edit.toPlainText()), get_toast().show_message("SnapMaster Pro", "تم نسخ النص بنجاح! 📋")))
+        btn_copy.clicked.connect(lambda: (QApplication.clipboard().setText(txt_edit.toPlainText()), get_toast().show_message("SnapMaster Pro", "Text copied to clipboard! 📋")))
         btn_box.addWidget(btn_copy)
 
-        btn_close = QPushButton("إغلاق")
+        btn_close = QPushButton("Close")
         btn_close.setStyleSheet("background: #334155; color: #ffffff; border-radius: 6px; padding: 8px 16px;")
         btn_close.clicked.connect(dlg.accept)
         btn_box.addWidget(btn_close)
@@ -190,8 +190,8 @@ class PinWindow(QWidget):
 
     def save_as(self):
         path, _ = QFileDialog.getSaveFileName(
-            self, "حفظ لقطة الشاشة", "Screenshot_Pinned.png", "PNG (*.png);;JPG (*.jpg)"
+            self, "Save Screenshot", "Screenshot_Pinned.png", "PNG (*.png);;JPG (*.jpg)"
         )
         if path:
             self.original_pixmap.save(path)
-            get_toast().show_message("تم الحفظ", f"تم حفظ الصورة في {os.path.basename(path)}")
+            get_toast().show_message("Saved", f"Screenshot saved to {os.path.basename(path)}")

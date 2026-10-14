@@ -53,7 +53,7 @@ class ToastNotification(QWidget):
         self.title_lbl.setStyleSheet("font-size: 13px; font-weight: bold; color: #38bdf8; background: transparent; border: none;")
         text_layout.addWidget(self.title_lbl)
 
-        self.msg_lbl = QLabel("تم نسخ لقطة الشاشة إلى الحافظة بنجاح")
+        self.msg_lbl = QLabel("Screenshot copied to clipboard successfully")
         self.msg_lbl.setStyleSheet("font-size: 11px; color: #cbd5e1; background: transparent; border: none;")
         self.msg_lbl.setWordWrap(True)
         text_layout.addWidget(self.msg_lbl)
@@ -61,7 +61,7 @@ class ToastNotification(QWidget):
         layout.addLayout(text_layout, stretch=1)
 
         # Action Button (optional)
-        self.btn_action = QPushButton("عرض")
+        self.btn_action = QPushButton("View")
         self.btn_action.setStyleSheet("""
             QPushButton {
                 background-color: #38bdf8;
@@ -104,7 +104,7 @@ class ToastNotification(QWidget):
 
         self._action_callback = None
 
-    def show_message(self, title, message, duration=3500, action_text="فتح", action_cb=None):
+    def show_message(self, title, message, duration=3500, action_text="Open", action_cb=None):
         self.title_lbl.setText(title)
         self.msg_lbl.setText(message)
         self._action_callback = action_cb

@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("SnapMaster Pro - تصوير الشاشة الاحترافي")
+        self.setWindowTitle("SnapMaster Pro - Ultimate Screen Capture Studio")
         self.setFixedSize(680, 560)
 
         icon_path = str(Path(__file__).resolve().parent.parent / "assets" / "icon.png")
@@ -75,7 +75,7 @@ class MainWindow(QMainWindow):
         title_lbl.setStyleSheet("font-size: 22px; font-weight: 800; color: #ffffff;")
         title_box.addWidget(title_lbl)
 
-        sub_lbl = QLabel("الأداة الاحترافية والشاملة لتصوير الشاشة وتجهيز الشروحات للكمبيوتر")
+        sub_lbl = QLabel("Ultimate screen capture, annotation & smart OCR studio for Windows")
         sub_lbl.setObjectName("HeaderSubtitle")
         sub_lbl.setStyleSheet("font-size: 12px; color: #94a3b8;")
         title_box.addWidget(sub_lbl)
@@ -96,7 +96,7 @@ class MainWindow(QMainWindow):
 
         # Card 1: Capture Region (Primary Hero)
         self.btn_region = self.create_hero_card(
-            "✂️", "تحديد منطقة مخصصة", "حدد أي جزء من الشاشة بدقة مع المكبرة",
+            "✂️", "Region Snip", "Select any custom area with live pixel magnifier",
             config.get("hotkey_region", "Ctrl+Shift+S"),
             gradient="qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #6366f1, stop:1 #38bdf8)"
         )
@@ -105,7 +105,7 @@ class MainWindow(QMainWindow):
 
         # Card 2: Fullscreen
         self.btn_fullscreen = self.create_hero_card(
-            "🖥️", "كامل الشاشة", "التقاط سريع لجميع الشاشات المتصلة",
+            "🖥️", "Fullscreen", "Instant capture of all connected monitors",
             config.get("hotkey_full", "Ctrl+Shift+F"),
             gradient="#1e293b"
         )
@@ -114,7 +114,7 @@ class MainWindow(QMainWindow):
 
         # Card 3: Active Window
         self.btn_window = self.create_hero_card(
-            "🪟", "النافذة النشطة", "تصوير نافذة التطبيق النشط بدقة بدون حواف زائفة",
+            "🪟", "Active Window", "Capture clean foreground window without drop shadows",
             config.get("hotkey_window", "Ctrl+Shift+W"),
             gradient="#1e293b"
         )
@@ -140,7 +140,7 @@ class MainWindow(QMainWindow):
                 border: 1px solid {border_color};
                 border-radius: 14px;
                 padding: 14px;
-                text-align: right;
+                text-align: left;
             }}
             QPushButton:hover {{
                 border: 1px solid #38bdf8;
@@ -190,7 +190,7 @@ class MainWindow(QMainWindow):
         icon_lbl.setStyleSheet("font-size: 24px;")
         top_row.addWidget(icon_lbl)
 
-        title_lbl = QLabel("تصوير بمؤقت زمني")
+        title_lbl = QLabel("Timed Delay")
         title_lbl.setStyleSheet("font-size: 14px; font-weight: bold; color: #ffffff;")
         top_row.addWidget(title_lbl)
         top_row.addStretch()
@@ -199,10 +199,10 @@ class MainWindow(QMainWindow):
         # Controls row
         ctrl_row = QHBoxLayout()
         self.cmb_delay = QComboBox()
-        self.cmb_delay.addItems(["3 ثوانٍ", "5 ثوانٍ", "10 ثوانٍ"])
+        self.cmb_delay.addItems(["3 Seconds", "5 Seconds", "10 Seconds"])
         ctrl_row.addWidget(self.cmb_delay)
 
-        self.btn_start_delay = QPushButton("بدء العد 🚀")
+        self.btn_start_delay = QPushButton("Start Timer 🚀")
         self.btn_start_delay.setStyleSheet("""
             QPushButton {
                 background: #6366f1; color: #ffffff; font-weight: bold; border-radius: 8px; padding: 6px 14px;
@@ -219,23 +219,23 @@ class MainWindow(QMainWindow):
         bar = QHBoxLayout()
         bar.setSpacing(10)
 
-        btn_ocr = QPushButton("🔍 استخراج نص (OCR)")
+        btn_ocr = QPushButton("🔍 Quick OCR")
         btn_ocr.setObjectName("SecondaryActionButton")
-        btn_ocr.setToolTip("تحديد منطقة واستخراج النص منها فوراً")
+        btn_ocr.setToolTip("Select an area and extract text instantly")
         btn_ocr.clicked.connect(self.request_region_capture.emit)
         bar.addWidget(btn_ocr)
 
-        btn_hist = QPushButton("🖼️ سجل اللقطات")
+        btn_hist = QPushButton("🖼️ History")
         btn_hist.setObjectName("SecondaryActionButton")
         btn_hist.clicked.connect(self.request_history.emit)
         bar.addWidget(btn_hist)
 
-        btn_folder = QPushButton("📁 فتح مجلد الحفظ")
+        btn_folder = QPushButton("📁 Screenshots Folder")
         btn_folder.setObjectName("SecondaryActionButton")
         btn_folder.clicked.connect(self.open_screenshots_folder)
         bar.addWidget(btn_folder)
 
-        btn_settings = QPushButton("⚙️ الإعدادات")
+        btn_settings = QPushButton("⚙️ Settings")
         btn_settings.setObjectName("SecondaryActionButton")
         btn_settings.clicked.connect(self.request_settings.emit)
         bar.addWidget(btn_settings)
@@ -247,19 +247,19 @@ class MainWindow(QMainWindow):
         footer_frame.setStyleSheet("background: #1e293b; border-radius: 10px; padding: 8px 14px;")
         f_layout = QHBoxLayout(footer_frame)
 
-        self.chk_auto_copy = QCheckBox("نسخ تلقائي للحافظة")
+        self.chk_auto_copy = QCheckBox("Auto Copy to Clipboard")
         self.chk_auto_copy.setChecked(config.get("auto_copy_clipboard", True))
         self.chk_auto_copy.toggled.connect(lambda v: config.set("auto_copy_clipboard", v))
         f_layout.addWidget(self.chk_auto_copy)
 
-        self.chk_open_ed = QCheckBox("فتح المحرر دائماً")
+        self.chk_open_ed = QCheckBox("Always Open Editor")
         self.chk_open_ed.setChecked(config.get("open_editor_after_capture", True))
         self.chk_open_ed.toggled.connect(lambda v: config.set("open_editor_after_capture", v))
         f_layout.addWidget(self.chk_open_ed)
 
         f_layout.addStretch()
 
-        self.lbl_status = QLabel("جاهز للالتقاط")
+        self.lbl_status = QLabel("Ready to capture")
         self.lbl_status.setStyleSheet("color: #38bdf8; font-weight: bold;")
         f_layout.addWidget(self.lbl_status)
 
@@ -270,19 +270,19 @@ class MainWindow(QMainWindow):
         seconds = 3 if "3" in text else (5 if "5" in text else 10)
         self.remaining_seconds = seconds
         self.btn_start_delay.setEnabled(False)
-        self.lbl_status.setText(f"جاري الالتقاط بعد {self.remaining_seconds} ثانية...")
+        self.lbl_status.setText(f"Capturing in {self.remaining_seconds}s...")
         self.countdown_timer.start()
 
     def on_countdown_tick(self):
         self.remaining_seconds -= 1
         if self.remaining_seconds > 0:
-            self.lbl_status.setText(f"جاري الالتقاط بعد {self.remaining_seconds} ثانية...")
+            self.lbl_status.setText(f"Capturing in {self.remaining_seconds}s...")
             self.btn_start_delay.setText(f"{self.remaining_seconds}s...")
         else:
             self.countdown_timer.stop()
             self.btn_start_delay.setEnabled(True)
-            self.btn_start_delay.setText("بدء العد 🚀")
-            self.lbl_status.setText("جاهز للالتقاط")
+            self.btn_start_delay.setText("Start Timer 🚀")
+            self.lbl_status.setText("Ready to capture")
             self.request_region_capture.emit()
 
     def trigger_fullscreen_capture(self):
@@ -320,8 +320,8 @@ class MainWindow(QMainWindow):
                 from ui.toast import get_toast
                 get_toast().show_message(
                     "SnapMaster Pro",
-                    "تم التقاط وحفظ لقطة الشاشة بنجاح! 📸",
-                    action_text="فتح المحرر",
+                    "Screenshot captured and saved! 📸",
+                    action_text="Open Editor",
                     action_cb=lambda: self.request_editor.emit(pil_image)
                 )
             self.show()

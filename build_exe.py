@@ -10,7 +10,7 @@ from pathlib import Path
 
 def build():
     print("=" * 60)
-    print("🚀 بدء بناء تطبيق SnapMaster Pro بصيغة Windows Executable (.exe)")
+    print("🚀 Building SnapMaster Pro Windows Executable (.exe)")
     print("=" * 60)
 
     base_dir = Path(__file__).resolve().parent
@@ -35,17 +35,17 @@ def build():
         str(base_dir / "main.py")
     ]
 
-    print("جاري تنفيذ أمر التجميع...")
+    print("Executing PyInstaller compilation command...")
     print(" ".join(cmd))
     result = subprocess.run(cmd)
 
     if result.returncode == 0:
         print("\n" + "=" * 60)
-        print("✅ تم بناء البرنامج بنجاح!")
-        print("المجلد الناتج: dist/SnapMasterPro/SnapMasterPro.exe")
+        print("✅ Build completed successfully!")
+        print("Output directory: dist/SnapMasterPro/SnapMasterPro.exe")
         print("=" * 60)
     else:
-        print("\n❌ حدث خطأ أثناء عملية البناء.")
+        print("\n❌ An error occurred during the build process.")
 
 if __name__ == "__main__":
     build()

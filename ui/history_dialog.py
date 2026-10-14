@@ -19,7 +19,7 @@ class HistoryDialog(QDialog):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("سجل لقطات الشاشة السابقة - SnapMaster Pro")
+        self.setWindowTitle("Screenshot History Gallery - SnapMaster Pro")
         self.resize(840, 540)
         self.setStyleSheet("background-color: #0f172a; color: #f8fafc;")
 
@@ -33,7 +33,7 @@ class HistoryDialog(QDialog):
 
         # Header
         top_bar = QHBoxLayout()
-        title = QLabel("🖼️ سجل لقطات الشاشة الحديثة")
+        title = QLabel("🖼️ Recent Screenshots Gallery")
         title.setStyleSheet("font-size: 16px; font-weight: bold; color: #38bdf8;")
         top_bar.addWidget(title)
 
@@ -41,7 +41,7 @@ class HistoryDialog(QDialog):
 
         # Search Bar
         self.txt_search = QLineEdit()
-        self.txt_search.setPlaceholderText("🔍 تصفية اللقطات بالاسم أو التاريخ...")
+        self.txt_search.setPlaceholderText("🔍 Filter captures by name or date...")
         self.txt_search.setStyleSheet("""
             QLineEdit {
                 background: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 6px; padding: 6px 12px; font-size: 12px;
@@ -53,7 +53,7 @@ class HistoryDialog(QDialog):
 
         top_bar.addSpacing(12)
 
-        btn_clear = QPushButton("🧹 مسح السجل")
+        btn_clear = QPushButton("🧹 Clear History")
         btn_clear.setStyleSheet("""
             QPushButton {
                 background: #1e293b; color: #f43f5e; border: 1px solid #334155; border-radius: 6px; padding: 6px 12px; font-weight: bold;
@@ -99,7 +99,7 @@ class HistoryDialog(QDialog):
         preview_panel.setStyleSheet("background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px;")
         p_layout = QVBoxLayout(preview_panel)
 
-        self.preview_label = QLabel("اختر لقطة من القائمة لمعاينتها")
+        self.preview_label = QLabel("Select a screenshot from the list to preview")
         self.preview_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.preview_label.setStyleSheet("background: #0f172a; border-radius: 6px; min-height: 220px;")
         p_layout.addWidget(self.preview_label, stretch=1)
@@ -112,33 +112,33 @@ class HistoryDialog(QDialog):
         actions_row = QHBoxLayout()
         actions_row.setSpacing(6)
 
-        self.btn_edit = QPushButton("✏️ المحرر")
+        self.btn_edit = QPushButton("✏️ Editor")
         self.btn_edit.setStyleSheet(self.btn_style("#6366f1", "#ffffff"))
-        self.btn_edit.setToolTip("فتح اللقطة في محرر الشروحات")
+        self.btn_edit.setToolTip("Open in Annotation Studio")
         self.btn_edit.clicked.connect(self.on_open_editor)
         actions_row.addWidget(self.btn_edit)
 
-        self.btn_ocr = QPushButton("🔍 استخراج النص")
+        self.btn_ocr = QPushButton("🔍 Extract Text")
         self.btn_ocr.setStyleSheet(self.btn_style("#0284c7", "#ffffff"))
-        self.btn_ocr.setToolTip("استخراج النصوص من هذه اللقطة عبر تقنية OCR")
+        self.btn_ocr.setToolTip("Extract text from this screenshot via OCR")
         self.btn_ocr.clicked.connect(self.on_ocr_item)
         actions_row.addWidget(self.btn_ocr)
 
-        self.btn_copy = QPushButton("📋 نسخ")
+        self.btn_copy = QPushButton("📋 Copy")
         self.btn_copy.setStyleSheet(self.btn_style("#10b981", "#ffffff"))
-        self.btn_copy.setToolTip("نسخ الصورة إلى الحافظة")
+        self.btn_copy.setToolTip("Copy screenshot to clipboard")
         self.btn_copy.clicked.connect(self.on_copy_image)
         actions_row.addWidget(self.btn_copy)
 
-        self.btn_folder = QPushButton("📁 المجلد")
+        self.btn_folder = QPushButton("📁 Folder")
         self.btn_folder.setStyleSheet(self.btn_style("#334155", "#f8fafc"))
-        self.btn_folder.setToolTip("تحديد الملف في مستكشف Windows")
+        self.btn_folder.setToolTip("Show in Windows Explorer")
         self.btn_folder.clicked.connect(self.on_open_folder)
         actions_row.addWidget(self.btn_folder)
 
-        self.btn_del = QPushButton("🗑️ حذف")
+        self.btn_del = QPushButton("🗑️ Delete")
         self.btn_del.setStyleSheet(self.btn_style("#f43f5e", "#ffffff"))
-        self.btn_del.setToolTip("حذف اللقطة")
+        self.btn_del.setToolTip("Delete screenshot from disk")
         self.btn_del.clicked.connect(self.on_delete_item)
         actions_row.addWidget(self.btn_del)
 
@@ -185,7 +185,7 @@ class HistoryDialog(QDialog):
         if self.list_widget.count() > 0:
             self.list_widget.setCurrentRow(0)
         else:
-            self.preview_label.setText("لا توجد لقطات شاشة مطابقة للبحث.")
+            self.preview_label.setText("No screenshots matching your search.")
             self.info_label.setText("")
 
     def filter_list(self):
@@ -206,9 +206,9 @@ class HistoryDialog(QDialog):
             size_kb = item_data.get("size_bytes", 0) / 1024.0
             dim = f"{item_data.get('width', pix.width())} × {item_data.get('height', pix.height())} px"
             self.info_label.setText(
-                f"📄 الملف: {item_data.get('filename')}\n"
-                f"📐 الأبعاد: {dim} | 💾 الحجم: {size_kb:.1f} KB\n"
-                f"🕒 التاريخ: {item_data.get('timestamp')}"
+                f"📄 File: {item_data.get('filename')}\n"
+                f"📐 Dimensions: {dim} | 💾 Size: {size_kb:.1f} KB\n"
+                f"🕒 Date: {item_data.get('timestamp')}"
             )
 
     def current_item_path(self):
@@ -239,12 +239,12 @@ class HistoryDialog(QDialog):
                 eng = "Auto"
 
             dlg = QDialog(self)
-            dlg.setWindowTitle("استخراج النص (OCR) - SnapMaster Pro")
+            dlg.setWindowTitle("Smart Text Extraction (OCR) - SnapMaster Pro")
             dlg.resize(540, 400)
             dlg.setStyleSheet("background-color: #0f172a; color: #ffffff;")
             dlg_lay = QVBoxLayout(dlg)
 
-            title_lbl = QLabel(f"النصوص المستخرجة عبر {eng}:" if success else "معلومات OCR:")
+            title_lbl = QLabel(f"Extracted Text via {eng}:" if success else "OCR Notice:")
             title_lbl.setStyleSheet("font-size: 14px; font-weight: bold; color: #38bdf8;")
             dlg_lay.addWidget(title_lbl)
 
@@ -254,12 +254,12 @@ class HistoryDialog(QDialog):
             dlg_lay.addWidget(txt_edit)
 
             btn_box = QHBoxLayout()
-            btn_copy = QPushButton("📋 نسخ النص")
+            btn_copy = QPushButton("📋 Copy Text")
             btn_copy.setStyleSheet("background: #38bdf8; color: #0f172a; font-weight: bold; border-radius: 6px; padding: 8px 16px;")
-            btn_copy.clicked.connect(lambda: (QApplication.clipboard().setText(txt_edit.toPlainText()), get_toast().show_message("SnapMaster Pro", "تم نسخ النص بنجاح! 📋")))
+            btn_copy.clicked.connect(lambda: (QApplication.clipboard().setText(txt_edit.toPlainText()), get_toast().show_message("SnapMaster Pro", "Text copied to clipboard! 📋")))
             btn_box.addWidget(btn_copy)
 
-            btn_close = QPushButton("إغلاق")
+            btn_close = QPushButton("Close")
             btn_close.setStyleSheet("background: #334155; color: #ffffff; border-radius: 6px; padding: 8px 16px;")
             btn_close.clicked.connect(dlg.accept)
             btn_box.addWidget(btn_close)
@@ -267,14 +267,14 @@ class HistoryDialog(QDialog):
             dlg_lay.addLayout(btn_box)
             dlg.exec()
         except Exception as e:
-            QMessageBox.warning(self, "خطأ OCR", f"حدث خطأ أثناء معالجة الصورة:\n{e}")
+            QMessageBox.warning(self, "OCR Error", f"An error occurred while running OCR:\n{e}")
 
     def on_copy_image(self):
         path = self.current_item_path()
         if path and os.path.exists(path):
             pix = QPixmap(path)
             copy_to_clipboard(pix)
-            get_toast().show_message("SnapMaster Pro", "تم نسخ الصورة إلى الحافظة بنجاح! 📋")
+            get_toast().show_message("SnapMaster Pro", "Screenshot copied to clipboard! 📋")
 
     def on_open_folder(self):
         path = self.current_item_path()
@@ -285,7 +285,7 @@ class HistoryDialog(QDialog):
         path = self.current_item_path()
         if path:
             ret = QMessageBox.question(
-                self, "تأكيد الحذف", f"هل أنت متأكد من حذف هذه اللقطة نهائياً من القرص؟\n{os.path.basename(path)}",
+                self, "Confirm Deletion", f"Are you sure you want to delete this screenshot from disk?\n{os.path.basename(path)}",
                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
             )
             if ret == QMessageBox.StandardButton.Yes:
@@ -294,7 +294,7 @@ class HistoryDialog(QDialog):
 
     def on_clear_history(self):
         ret = QMessageBox.question(
-            self, "تأكيد المسح", "هل أنت متأكد من مسح سجل اللقطات؟ (لن يتم حذف ملفات الصور من القرص)",
+            self, "Clear History", "Are you sure you want to clear screenshot history? (Files will not be deleted from disk)",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
         if ret == QMessageBox.StandardButton.Yes:

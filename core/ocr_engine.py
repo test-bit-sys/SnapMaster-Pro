@@ -45,7 +45,7 @@ def get_available_engines():
     """Returns list of available OCR engines."""
     engines = []
     if WINOCR_AVAILABLE:
-        engines.append("Windows Media OCR (مدمج بالنظام)")
+        engines.append("Windows Media OCR (Native Windows API)")
     if find_tesseract():
         engines.append("Tesseract OCR")
     return engines
@@ -56,7 +56,7 @@ def extract_text_from_image(pil_image, lang="auto", engine_pref="auto"):
     Returns: (success: bool, text: str, engine_name: str)
     """
     if not isinstance(pil_image, Image.Image):
-        return False, "الصورة المدخلة غير صالحة.", "None"
+        return False, "Invalid image input.", "None"
 
     # Pre-process image: convert to RGB if palette or transparent
     img_processed = pil_image
@@ -88,9 +88,9 @@ def extract_text_from_image(pil_image, lang="auto", engine_pref="auto"):
             if text_ar and text_en:
                 # If Arabic detected significant text, prioritize or merge
                 if len(text_ar) > len(text_en):
-                    combined_text = f"{text_ar}\n\n[النسخة بالإنجليزية]:\n{text_en}"
+                    combined_text = f"{text_ar}\n\n[English text]:\n{text_en}"
                 else:
-                    combined_text = f"{text_en}\n\n[النسخة بالعربية]:\n{text_ar}"
+                    combined_text = f"{text_en}\n\n[Arabic text]:\n{text_ar}"
             elif text_ar:
                 combined_text = text_ar
             else:
@@ -120,9 +120,9 @@ def extract_text_from_image(pil_image, lang="auto", engine_pref="auto"):
     if not is_ocr_available():
         return (
             False,
-            "لم يتم العثور على محرك OCR متاح على النظام.\n\n"
-            "يمكنك تثبيت مكتبة winocr أو برنامج Tesseract OCR للاستفادة من هذه الميزة.",
+            "No OCR engine found on this system.\n\n"
+            "Please ensure winocr is installed or install Tesseract OCR to enable text extraction.",
             "None"
         )
 
-    return False, "لم يتم العثور على أي نص مكتوب في الصورة المحددة.", "Auto"
+    return False, "No recognizable text found in the selected image.", "Auto"
