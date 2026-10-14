@@ -29,6 +29,8 @@ def build():
         f"--add-data={base_dir / 'assets'};assets",
         f"--add-data={base_dir / 'core'};core",
         f"--add-data={base_dir / 'ui'};ui",
+        "--collect-all=winocr",
+        "--collect-all=mss",
         "--clean",
         str(base_dir / "main.py")
     ]

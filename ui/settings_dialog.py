@@ -84,6 +84,10 @@ class SettingsDialog(QDialog):
         self.chk_sound.setChecked(config.get("play_shutter_sound", True))
         lay_flow.addWidget(self.chk_sound)
 
+        self.chk_toast = QCheckBox("عرض إشعارات تفاعلية سريعة (Toast HUD) عند الالتقاط والحفظ")
+        self.chk_toast.setChecked(config.get("enable_toast", True))
+        lay_flow.addWidget(self.chk_toast)
+
         self.chk_tray = QCheckBox("التصغير إلى صينية النظام (System Tray) عند إغلاق النافذة")
         self.chk_tray.setChecked(config.get("minimize_to_tray", True))
         lay_flow.addWidget(self.chk_tray)
@@ -91,6 +95,22 @@ class SettingsDialog(QDialog):
         self.chk_magnifier = QCheckBox("تفعيل المكبرة اللحظية (Live Magnifier) أثناء التحديد")
         self.chk_magnifier.setChecked(config.get("magnifier_enabled", True))
         lay_flow.addWidget(self.chk_magnifier)
+
+        # OCR Engine Selector
+        row_ocr = QHBoxLayout()
+        row_ocr.addWidget(QLabel("محرك استخراج النصوص (OCR):"))
+        self.cmb_ocr = QComboBox()
+        self.cmb_ocr.addItem("تلقائي (Windows Media OCR + Tesseract)", "auto")
+        self.cmb_ocr.addItem("Windows Media OCR (مدمج بالنظام - فائق السرعة)", "winocr")
+        self.cmb_ocr.addItem("Tesseract OCR (خارجي)", "tesseract")
+        curr_ocr = config.get("ocr_engine", "auto")
+        for i in range(self.cmb_ocr.count()):
+            if self.cmb_ocr.itemData(i) == curr_ocr:
+                self.cmb_ocr.setCurrentIndex(i)
+                break
+        row_ocr.addWidget(self.cmb_ocr)
+        row_ocr.addStretch()
+        lay_flow.addLayout(row_ocr)
 
         layout.addWidget(grp_flow)
 
@@ -151,8 +171,10 @@ class SettingsDialog(QDialog):
         config.set("auto_save", self.chk_auto_save.isChecked())
         config.set("open_editor_after_capture", self.chk_open_editor.isChecked())
         config.set("play_shutter_sound", self.chk_sound.isChecked())
+        config.set("enable_toast", self.chk_toast.isChecked())
         config.set("minimize_to_tray", self.chk_tray.isChecked())
         config.set("magnifier_enabled", self.chk_magnifier.isChecked())
+        config.set("ocr_engine", self.cmb_ocr.currentData())
 
         config.set("hotkey_region", self.txt_hk_region.text().strip())
         config.set("hotkey_full", self.txt_hk_full.text().strip())

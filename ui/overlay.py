@@ -15,6 +15,7 @@ class SnippingOverlay(QWidget):
     capture_completed = pyqtSignal(object)  # Emits PIL Image
     capture_cancelled = pyqtSignal()
     pin_requested = pyqtSignal(object)      # Emits PIL Image
+    ocr_requested = pyqtSignal(object)      # Emits PIL Image
 
     # Resize handle states
     HANDLE_NONE = 0
@@ -60,6 +61,7 @@ class SnippingOverlay(QWidget):
         self.toolbar_rect = QRect()
         self.btn_edit_rect = QRect()
         self.btn_copy_rect = QRect()
+        self.btn_ocr_rect = QRect()
         self.btn_save_rect = QRect()
         self.btn_pin_rect = QRect()
         self.btn_cancel_rect = QRect()
@@ -90,6 +92,12 @@ class SnippingOverlay(QWidget):
                 self.action_save()
             elif key == Qt.Key.Key_P:
                 self.action_pin()
+            elif key == Qt.Key.Key_T:
+                self.action_ocr()
+        elif not self.selection_rect and key in (Qt.Key.Key_Space, Qt.Key.Key_F):
+            # Select entire virtual desktop immediately
+            self.selection_rect = self.rect()
+            self.update()
         elif self.selection_rect:
             # Nudge selection with arrow keys
             step = 10 if (event.modifiers() & Qt.KeyboardModifier.ShiftModifier) else 1
@@ -125,6 +133,8 @@ class SnippingOverlay(QWidget):
                     self.confirm_capture()
                 elif self.btn_copy_rect.contains(pos):
                     self.action_copy()
+                elif self.btn_ocr_rect.contains(pos):
+                    self.action_ocr()
                 elif self.btn_save_rect.contains(pos):
                     self.action_save()
                 elif self.btn_pin_rect.contains(pos):
@@ -381,7 +391,7 @@ class SnippingOverlay(QWidget):
 
     def draw_action_toolbar(self, painter, rect):
         """Draws floating quick-actions bar near the selection."""
-        tb_width = 240
+        tb_width = 286
         tb_height = 42
 
         # Position below selection, or above if near screen bottom
@@ -401,7 +411,7 @@ class SnippingOverlay(QWidget):
         painter.setBrush(QBrush(QColor(15, 23, 42, 240)))
         painter.drawRoundedRect(self.toolbar_rect, 10, 10)
 
-        # Action Buttons: Edit, Copy, Save, Pin, Cancel
+        # Action Buttons: Edit, Copy, OCR, Save, Pin, Cancel
         btn_w = 42
         btn_h = 32
         spacing = 4
@@ -411,6 +421,7 @@ class SnippingOverlay(QWidget):
         buttons = [
             ("btn_edit", "✏️", "تعديل (Enter)"),
             ("btn_copy", "📋", "نسخ (Ctrl+C)"),
+            ("btn_ocr", "🔍", "استخراج النص (Ctrl+T)"),
             ("btn_save", "💾", "حفظ (Ctrl+S)"),
             ("btn_pin", "📌", "تثبيت (Ctrl+P)"),
             ("btn_cancel", "❌", "إلغاء (Esc)")
@@ -557,6 +568,13 @@ class SnippingOverlay(QWidget):
         self.close()
         if img:
             self.pin_requested.emit(img)
+
+    def action_ocr(self):
+        """Extracts text via OCR and closes."""
+        img = self.get_cropped_image()
+        self.close()
+        if img:
+            self.ocr_requested.emit(img)
 
     def cancel_capture(self):
         self.close()

@@ -10,12 +10,14 @@ DEFAULT_CONFIG = {
     "auto_save": True,
     "open_editor_after_capture": True,
     "play_shutter_sound": True,
+    "enable_toast": True,
     "minimize_to_tray": True,
     "magnifier_enabled": True,
     "magnifier_zoom": 5,
     "hotkey_region": "ctrl+shift+s",
     "hotkey_full": "ctrl+shift+f",
     "hotkey_window": "ctrl+shift+w",
+    "ocr_engine": "auto",  # auto, winocr, tesseract
     "theme": "dark"
 }
 

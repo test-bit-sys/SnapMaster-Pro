@@ -1,6 +1,14 @@
+# Core GUI Framework
 PyQt6>=6.6.0
+
+# Screen Capture & Imaging
 mss>=9.0.0
 Pillow>=10.0.0
+
+# Windows System Integration & Hotkeys
 pywin32>=306
 keyboard>=0.13.5
+
+# OCR Engines (Native Windows OCR + Tesseract Fallback)
+winocr>=0.0.15
 pytesseract>=0.3.10

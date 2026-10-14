@@ -1,8 +1,14 @@
-from PyQt6.QtWidgets import QWidget, QMenu, QApplication, QFileDialog
+import os
+from PyQt6.QtWidgets import (
+    QWidget, QMenu, QApplication, QFileDialog, QDialog, QVBoxLayout,
+    QLabel, QTextEdit, QPushButton, QHBoxLayout
+)
 from PyQt6.QtCore import Qt, QPoint, QRect
-from PyQt6.QtGui import QPainter, QPixmap, QCursor, QAction
-from core.capture import pil_to_qpixmap, copy_to_clipboard
+from PyQt6.QtGui import QPainter, QPixmap, QCursor, QAction, QPen, QColor
+from core.capture import pil_to_qpixmap, qpixmap_to_pil, copy_to_clipboard
 from core.history import history
+from core.ocr_engine import extract_text_from_image
+from ui.toast import get_toast
 
 class PinWindow(QWidget):
     def __init__(self, pil_image, parent=None):
@@ -31,6 +37,11 @@ class PinWindow(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         painter.setOpacity(self.opacity)
         painter.drawPixmap(0, 0, self.current_pixmap)
+
+        # Subtle glowing edge border
+        painter.setPen(QPen(QColor(56, 189, 248, 120), 1))
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.drawRect(0, 0, self.width() - 1, self.height() - 1)
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -85,6 +96,7 @@ class PinWindow(QWidget):
             self.close()
         elif event.modifiers() & Qt.KeyboardModifier.ControlModifier and event.key() == Qt.Key.Key_C:
             copy_to_clipboard(self.original_pixmap)
+            get_toast().show_message("SnapMaster Pro", "تم نسخ الصورة إلى الحافظة! 📋")
         else:
             super().keyPressEvent(event)
 
@@ -105,10 +117,12 @@ class PinWindow(QWidget):
             QMenu::item:selected {
                 background-color: #38bdf8;
                 color: #0f172a;
+                font-weight: bold;
             }
         """)
 
         act_copy = menu.addAction("📋 نسخ إلى الحافظة")
+        act_ocr = menu.addAction("🔍 استخراج النص (OCR)")
         act_save = menu.addAction("💾 حفظ باسم...")
         menu.addSeparator()
 
@@ -123,10 +137,51 @@ class PinWindow(QWidget):
         chosen = menu.exec(global_pos)
         if chosen == act_copy:
             copy_to_clipboard(self.original_pixmap)
+            get_toast().show_message("SnapMaster Pro", "تم نسخ الصورة إلى الحافظة! 📋")
+        elif chosen == act_ocr:
+            self.do_ocr()
         elif chosen == act_save:
             self.save_as()
         elif chosen == act_close:
             self.close()
+
+    def do_ocr(self):
+        pil_img = qpixmap_to_pil(self.original_pixmap)
+        res = extract_text_from_image(pil_img)
+        if len(res) == 3:
+            success, text, eng = res
+        else:
+            success, text = res
+            eng = "Auto"
+
+        dlg = QDialog(self)
+        dlg.setWindowTitle("استخراج النص (OCR)")
+        dlg.resize(500, 360)
+        dlg.setStyleSheet("background-color: #0f172a; color: #ffffff;")
+        dlg_lay = QVBoxLayout(dlg)
+
+        title_lbl = QLabel(f"النصوص المستخرجة عبر {eng}:" if success else "معلومات OCR:")
+        title_lbl.setStyleSheet("font-size: 14px; font-weight: bold; color: #38bdf8;")
+        dlg_lay.addWidget(title_lbl)
+
+        txt_edit = QTextEdit()
+        txt_edit.setPlainText(text)
+        txt_edit.setStyleSheet("background-color: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; font-size: 13px; padding: 10px;")
+        dlg_lay.addWidget(txt_edit)
+
+        btn_box = QHBoxLayout()
+        btn_copy = QPushButton("📋 نسخ النص")
+        btn_copy.setStyleSheet("background: #38bdf8; color: #0f172a; font-weight: bold; border-radius: 6px; padding: 8px 16px;")
+        btn_copy.clicked.connect(lambda: (QApplication.clipboard().setText(txt_edit.toPlainText()), get_toast().show_message("SnapMaster Pro", "تم نسخ النص بنجاح! 📋")))
+        btn_box.addWidget(btn_copy)
+
+        btn_close = QPushButton("إغلاق")
+        btn_close.setStyleSheet("background: #334155; color: #ffffff; border-radius: 6px; padding: 8px 16px;")
+        btn_close.clicked.connect(dlg.accept)
+        btn_box.addWidget(btn_close)
+
+        dlg_lay.addLayout(btn_box)
+        dlg.exec()
 
     def set_custom_opacity(self, val):
         self.opacity = val
@@ -139,3 +194,4 @@ class PinWindow(QWidget):
         )
         if path:
             self.original_pixmap.save(path)
+            get_toast().show_message("تم الحفظ", f"تم حفظ الصورة في {os.path.basename(path)}")

@@ -22,6 +22,7 @@ from core.hotkeys import hotkeys
 from core.config import config
 from core.history import history
 from core.capture import copy_to_clipboard
+from ui.toast import get_toast
 
 class SnapMasterApp:
     def __init__(self):
@@ -57,6 +58,7 @@ class SnapMasterApp:
         self.overlay.capture_completed.connect(self.on_overlay_captured)
         self.overlay.capture_cancelled.connect(self.on_overlay_cancelled)
         self.overlay.pin_requested.connect(self.create_pin_window)
+        self.overlay.ocr_requested.connect(self.on_overlay_ocr)
 
         # Editor
         self.editor.pin_requested.connect(self.create_pin_window)
@@ -108,7 +110,21 @@ class SnapMasterApp:
         if config.get("open_editor_after_capture", True):
             self.open_editor(pil_image)
         else:
-            self.tray.notify("SnapMaster Pro", "تم التقاط وحفظ لقطة الشاشة بنجاح!")
+            if config.get("enable_toast", True):
+                get_toast().show_message(
+                    "SnapMaster Pro",
+                    "تم التقاط لقطة الشاشة وحفظها بنجاح! 📸",
+                    action_text="فتح المحرر",
+                    action_cb=lambda: self.open_editor(pil_image)
+                )
+            else:
+                self.tray.notify("SnapMaster Pro", "تم التقاط وحفظ لقطة الشاشة بنجاح!")
+
+    def on_overlay_ocr(self, pil_image):
+        if not pil_image:
+            return
+        self.open_editor(pil_image)
+        self.editor.action_ocr()
 
     def on_overlay_cancelled(self):
         # If main window was open before, restore it

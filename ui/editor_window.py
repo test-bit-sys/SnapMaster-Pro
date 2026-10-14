@@ -1,6 +1,9 @@
 import os
 import math
+import webbrowser
+import urllib.parse
 from datetime import datetime
+from pathlib import Path
 from PIL import Image, ImageFilter
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QToolBar, QToolButton,
@@ -17,6 +20,7 @@ from core.capture import pil_to_qpixmap, qpixmap_to_pil, copy_to_clipboard
 from core.history import history
 from core.config import config
 from core.ocr_engine import extract_text_from_image, is_ocr_available
+from ui.toast import get_toast
 
 # Tool definitions
 TOOL_SELECT = "select"
@@ -372,6 +376,10 @@ class EditorWindow(QMainWindow):
         self.setWindowTitle("SnapMaster Pro - محرر الصور والشروحات")
         self.setMinimumSize(950, 680)
 
+        icon_path = str(Path(__file__).resolve().parent.parent / "assets" / "icon.png")
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
+
         # Main layout
         central = QWidget()
         self.setCentralWidget(central)
@@ -667,6 +675,13 @@ class EditorWindow(QMainWindow):
             copy_to_clipboard(rendered)
             if config.get("auto_save", True):
                 history.save_image(rendered)
+            if config.get("enable_toast", True):
+                get_toast().show_message(
+                    "SnapMaster Pro",
+                    "تم نسخ لقطة الشاشة إلى الحافظة بنجاح 📋",
+                    action_text="فتح المجلد",
+                    action_cb=lambda: os.startfile(config.get("save_dir", ""))
+                )
             self.close()
 
     def action_save_as(self):
@@ -681,14 +696,20 @@ class EditorWindow(QMainWindow):
             self,
             "حفظ لقطة الشاشة",
             suggested,
-            "PNG Image (*.png);;JPEG Image (*.jpg);;WebP Image (*.webp);;All Files (*.*)"
+            "PNG Image (*.png);;JPEG Image (*.jpg);;WebP Image (*.webp);;PDF Document (*.pdf);;All Files (*.*)"
         )
         if path:
             ext = os.path.splitext(path)[1].lower()
-            fmt = "PNG" if ext == ".png" else ("JPEG" if ext in (".jpg", ".jpeg") else "WEBP")
-            rendered.save(path, fmt)
+            if ext == ".pdf":
+                rendered.convert("RGB").save(path, "PDF")
+            else:
+                fmt = "PNG" if ext == ".png" else ("JPEG" if ext in (".jpg", ".jpeg") else "WEBP")
+                rendered.save(path, fmt)
             history.add_entry(path, rendered.width, rendered.height)
-            QMessageBox.information(self, "تم الحفظ", f"تم حفظ لقطة الشاشة بنجاح في:\n{path}")
+            if config.get("enable_toast", True):
+                get_toast().show_message("تم الحفظ", f"تم حفظ لقطة الشاشة بنجاح:\n{os.path.basename(path)}")
+            else:
+                QMessageBox.information(self, "تم الحفظ", f"تم حفظ لقطة الشاشة بنجاح في:\n{path}")
 
     def action_pin(self):
         rendered = self.canvas.render_final_image()
@@ -701,22 +722,44 @@ class EditorWindow(QMainWindow):
         if not rendered:
             return
         self.status_bar.setText("جاري معالجة النص عبر تقنية OCR...")
-        success, text = extract_text_from_image(rendered)
+        res = extract_text_from_image(rendered)
+        if len(res) == 3:
+            success, text, engine_name = res
+        else:
+            success, text = res
+            engine_name = "Auto"
 
         dlg = QDialog(self)
-        dlg.setWindowTitle("استخراج النص (OCR)")
-        dlg.resize(500, 380)
+        dlg.setWindowTitle("استخراج النص الذكي (OCR) - SnapMaster Pro")
+        dlg.resize(580, 440)
         dlg.setStyleSheet("background-color: #0f172a; color: #ffffff;")
         dlg_layout = QVBoxLayout(dlg)
+        dlg_layout.setContentsMargins(18, 18, 18, 18)
+        dlg_layout.setSpacing(12)
 
-        title_lbl = QLabel("النصوص المستخرجة من الصورة:" if success else "معلومات OCR:")
-        title_lbl.setStyleSheet("font-size: 14px; font-weight: bold; color: #38bdf8;")
-        dlg_layout.addWidget(title_lbl)
+        header_row = QHBoxLayout()
+        title_lbl = QLabel("النصوص المستخرجة من لقطة الشاشة:" if success else "تنبيه OCR:")
+        title_lbl.setStyleSheet("font-size: 15px; font-weight: bold; color: #38bdf8;")
+        header_row.addWidget(title_lbl)
+
+        header_row.addStretch()
+
+        engine_badge = QLabel(f"⚡ المحرك: {engine_name}")
+        engine_badge.setStyleSheet("background: #1e293b; color: #10b981; font-weight: bold; border-radius: 6px; padding: 3px 8px; font-size: 11px; border: 1px solid #334155;")
+        header_row.addWidget(engine_badge)
+        dlg_layout.addLayout(header_row)
 
         txt_edit = QTextEdit()
         txt_edit.setPlainText(text)
-        txt_edit.setStyleSheet("background-color: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; font-size: 13px; padding: 10px;")
+        txt_edit.setStyleSheet("background-color: #1e293b; color: #f8fafc; border: 1px solid #334155; border-radius: 8px; font-size: 13px; padding: 12px; line-height: 1.5;")
         dlg_layout.addWidget(txt_edit)
+
+        # Counter info
+        char_count = len(text)
+        word_count = len(text.split())
+        info_lbl = QLabel(f"عدد الكلمات: {word_count} | عدد الأحرف: {char_count}")
+        info_lbl.setStyleSheet("color: #94a3b8; font-size: 11px;")
+        dlg_layout.addWidget(info_lbl)
 
         btn_row = QHBoxLayout()
         btn_copy_text = QPushButton("📋 نسخ النص")
@@ -726,8 +769,35 @@ class EditorWindow(QMainWindow):
             }
             QPushButton:hover { background: #0284c7; }
         """)
-        btn_copy_text.clicked.connect(lambda: QApplication.clipboard().setText(text))
+        def do_copy():
+            QApplication.clipboard().setText(txt_edit.toPlainText())
+            get_toast().show_message("SnapMaster Pro", "تم نسخ النص المستخرج إلى الحافظة! 📋")
+            btn_copy_text.setText("✅ تم النسخ!")
+        btn_copy_text.clicked.connect(do_copy)
         btn_row.addWidget(btn_copy_text)
+
+        btn_search = QPushButton("🌐 بحث في Google")
+        btn_search.setStyleSheet("background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-radius: 6px; padding: 8px 14px; font-weight: bold;")
+        def do_search():
+            q = txt_edit.toPlainText().strip()
+            if q:
+                url = f"https://www.google.com/search?q={urllib.parse.quote(q)}"
+                webbrowser.open(url)
+        btn_search.clicked.connect(do_search)
+        btn_row.addWidget(btn_search)
+
+        btn_save_txt = QPushButton("💾 حفظ كملف TXT")
+        btn_save_txt.setStyleSheet("background: #1e293b; color: #e2e8f0; border: 1px solid #334155; border-radius: 6px; padding: 8px 14px; font-weight: bold;")
+        def do_save_txt():
+            path, _ = QFileDialog.getSaveFileName(dlg, "حفظ النص المستخرج", "Extracted_Text.txt", "Text Files (*.txt)")
+            if path:
+                with open(path, "w", encoding="utf-8") as f:
+                    f.write(txt_edit.toPlainText())
+                get_toast().show_message("تم الحفظ", f"تم حفظ النص في {os.path.basename(path)}")
+        btn_save_txt.clicked.connect(do_save_txt)
+        btn_row.addWidget(btn_save_txt)
+
+        btn_row.addStretch()
 
         btn_close = QPushButton("إغلاق")
         btn_close.setStyleSheet("background: #334155; color: #ffffff; border-radius: 6px; padding: 8px 16px;")

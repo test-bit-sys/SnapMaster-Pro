@@ -50,6 +50,9 @@ class SystemTrayManager(QObject):
         act_region = menu.addAction("✂️ تصوير منطقة مخصصة")
         act_region.triggered.connect(self.sig_capture_region.emit)
 
+        act_ocr = menu.addAction("🔍 استخراج نص فوري (OCR)")
+        act_ocr.triggered.connect(self.sig_capture_region.emit)
+
         act_full = menu.addAction("🖥️ تصوير كامل الشاشة")
         act_full.triggered.connect(self.sig_capture_full.emit)
 

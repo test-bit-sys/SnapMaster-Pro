@@ -219,6 +219,12 @@ class MainWindow(QMainWindow):
         bar = QHBoxLayout()
         bar.setSpacing(10)
 
+        btn_ocr = QPushButton("🔍 استخراج نص (OCR)")
+        btn_ocr.setObjectName("SecondaryActionButton")
+        btn_ocr.setToolTip("تحديد منطقة واستخراج النص منها فوراً")
+        btn_ocr.clicked.connect(self.request_region_capture.emit)
+        bar.addWidget(btn_ocr)
+
         btn_hist = QPushButton("🖼️ سجل اللقطات")
         btn_hist.setObjectName("SecondaryActionButton")
         btn_hist.clicked.connect(self.request_history.emit)
@@ -310,6 +316,14 @@ class MainWindow(QMainWindow):
         if config.get("open_editor_after_capture", True):
             self.request_editor.emit(pil_image)
         else:
+            if config.get("enable_toast", True):
+                from ui.toast import get_toast
+                get_toast().show_message(
+                    "SnapMaster Pro",
+                    "تم التقاط وحفظ لقطة الشاشة بنجاح! 📸",
+                    action_text="فتح المحرر",
+                    action_cb=lambda: self.request_editor.emit(pil_image)
+                )
             self.show()
 
     def open_screenshots_folder(self):
