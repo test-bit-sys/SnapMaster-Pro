@@ -387,16 +387,18 @@ class EditorWindow(QMainWindow):
         main_layout.setContentsMargins(0, 0, 0, 0)
         main_layout.setSpacing(0)
 
-        # 1. Sleek Top Toolbar
-        self.create_top_toolbar(main_layout)
-
-        # 2. Scroll area with Canvas
+        # 1. Canvas and Scroll Area (Initialized first so toolbar can bind to canvas)
         self.scroll_area = QScrollArea()
         self.scroll_area.setStyleSheet("background-color: #0b0f19; border: none;")
         self.scroll_area.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.canvas = CanvasWidget()
         self.canvas.status_updated.connect(self.on_canvas_status)
         self.scroll_area.setWidget(self.canvas)
+
+        # 2. Sleek Top Toolbar
+        self.create_top_toolbar(main_layout)
+
+        # 3. Add Scroll Area to layout below toolbar
         main_layout.addWidget(self.scroll_area)
 
         # 3. Status Bar
