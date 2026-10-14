@@ -29,6 +29,7 @@ def build():
         f"--add-data={base_dir / 'assets'};assets",
         f"--add-data={base_dir / 'core'};core",
         f"--add-data={base_dir / 'ui'};ui",
+        f"--add-data={base_dir / 'qt.conf'};.",
         "--collect-all=winocr",
         "--collect-all=mss",
         "--clean",

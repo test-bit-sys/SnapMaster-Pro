@@ -4,7 +4,7 @@ from pathlib import Path
 from PyQt6.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QFrame, QGridLayout, QComboBox, QCheckBox, QMessageBox, QSpacerItem,
-    QSizePolicy
+    QSizePolicy, QApplication
 )
 from PyQt6.QtCore import Qt, pyqtSignal, QTimer
 from PyQt6.QtGui import QIcon, QFont, QPixmap
@@ -14,6 +14,7 @@ from core.capture import (
 )
 from core.history import history
 from core.sound import play_shutter
+from ui.toast import get_toast
 
 class MainWindow(QMainWindow):
     request_region_capture = pyqtSignal()
@@ -335,5 +336,15 @@ class MainWindow(QMainWindow):
         if config.get("minimize_to_tray", True):
             event.ignore()
             self.hide()
+            if not getattr(self, "_tray_notified", False):
+                self._tray_notified = True
+                if config.get("enable_toast", True):
+                    get_toast().show_message(
+                        "SnapMaster Pro",
+                        "Running in background. Press Ctrl+Shift+S or click tray icon.",
+                        action_text="Show",
+                        action_cb=self.showNormal
+                    )
         else:
             event.accept()
+            QApplication.quit()

@@ -12,6 +12,8 @@ DEFAULT_CONFIG = {
     "play_shutter_sound": True,
     "enable_toast": True,
     "minimize_to_tray": True,
+    "start_minimized": False,
+    "run_on_startup": False,
     "magnifier_enabled": True,
     "magnifier_zoom": 5,
     "hotkey_region": "ctrl+shift+s",

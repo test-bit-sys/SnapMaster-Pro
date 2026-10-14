@@ -32,6 +32,9 @@ class SnapMasterApp:
         self.app.setStyle("Fusion")
         self.app.setStyleSheet(DARK_THEME)
 
+        # Allow app to keep running silently in background when windows are closed
+        self.app.setQuitOnLastWindowClosed(False)
+
         icon_path = str(BASE_DIR / "assets" / "icon.png")
         if os.path.exists(icon_path):
             self.app.setWindowIcon(QIcon(icon_path))
@@ -88,6 +91,7 @@ class SnapMasterApp:
     def show_main_window(self):
         self.main_window.showNormal()
         self.main_window.activateWindow()
+        self.main_window.raise_()
 
     def start_region_capture(self):
         # Hide main window briefly to not capture it
@@ -151,7 +155,23 @@ class SnapMasterApp:
         self.app.quit()
 
     def run(self):
-        self.main_window.show()
+        start_min = (
+            config.get("start_minimized", False)
+            or "--minimized" in sys.argv
+            or "--background" in sys.argv
+        )
+
+        if start_min:
+            if config.get("enable_toast", True):
+                get_toast().show_message(
+                    "SnapMaster Pro",
+                    "Running silently in background. Press Ctrl+Shift+S to capture.",
+                    action_text="Dashboard",
+                    action_cb=self.show_main_window
+                )
+        else:
+            self.main_window.show()
+
         return self.app.exec()
 
 if __name__ == "__main__":

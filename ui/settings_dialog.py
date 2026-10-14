@@ -8,6 +8,7 @@ from PyQt6.QtGui import QIcon
 from PyQt6.QtCore import Qt, pyqtSignal
 from core.config import config
 from core.hotkeys import hotkeys
+from core.autostart import is_autostart_enabled, set_autostart
 
 class SettingsDialog(QDialog):
     settings_saved = pyqtSignal()
@@ -15,7 +16,7 @@ class SettingsDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Settings & Preferences - SnapMaster Pro")
-        self.resize(580, 540)
+        self.resize(600, 600)
 
         icon_path = str(Path(__file__).resolve().parent.parent / "assets" / "icon.png")
         if os.path.exists(icon_path):
@@ -95,9 +96,17 @@ class SettingsDialog(QDialog):
         self.chk_toast.setChecked(config.get("enable_toast", True))
         lay_flow.addWidget(self.chk_toast)
 
-        self.chk_tray = QCheckBox("Minimize to System Tray when closing dashboard window")
+        self.chk_tray = QCheckBox("Minimize to System Tray when closing dashboard (Keep running in background)")
         self.chk_tray.setChecked(config.get("minimize_to_tray", True))
         lay_flow.addWidget(self.chk_tray)
+
+        self.chk_start_minimized = QCheckBox("Start minimized to System Tray upon launch (Silent Background Mode)")
+        self.chk_start_minimized.setChecked(config.get("start_minimized", False))
+        lay_flow.addWidget(self.chk_start_minimized)
+
+        self.chk_autostart = QCheckBox("Launch SnapMaster Pro automatically on Windows startup (Background)")
+        self.chk_autostart.setChecked(is_autostart_enabled())
+        lay_flow.addWidget(self.chk_autostart)
 
         self.chk_magnifier = QCheckBox("Enable live pixel magnifier during region selection")
         self.chk_magnifier.setChecked(config.get("magnifier_enabled", True))
@@ -180,6 +189,9 @@ class SettingsDialog(QDialog):
         config.set("play_shutter_sound", self.chk_sound.isChecked())
         config.set("enable_toast", self.chk_toast.isChecked())
         config.set("minimize_to_tray", self.chk_tray.isChecked())
+        config.set("start_minimized", self.chk_start_minimized.isChecked())
+        config.set("run_on_startup", self.chk_autostart.isChecked())
+        set_autostart(self.chk_autostart.isChecked())
         config.set("magnifier_enabled", self.chk_magnifier.isChecked())
         config.set("ocr_engine", self.cmb_ocr.currentData())
 

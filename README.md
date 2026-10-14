@@ -82,6 +82,12 @@ Whether you are creating documentation, reporting bugs, capturing meeting slides
 - **Instant Search Bar:** Filter captures by date or name in real-time.
 - **Direct Actions:** Open in Editor, Copy, Show in File Explorer, Delete, or run OCR on past captures.
 
+### 8. 🛡️ Silent Background Execution & Windows Autostart
+- **Seamless System Tray Integration:** Closing the dashboard window minimizes to the Windows System Tray while keeping global hotkeys active.
+- **Persistent Background Hotkeys:** Trigger screen capture and OCR anytime without keeping open windows on your desktop.
+- **Silent Startup Mode:** Run with `--minimized` or `--background` to start directly into the system tray with zero screen intrusion.
+- **One-Click Windows Autostart:** Easily configure SnapMaster Pro to launch automatically in the background on Windows boot via Preferences.
+
 ---
 
 ## ⌨️ Default Keyboard Shortcuts
